@@ -8,8 +8,8 @@ console.log(publicPath + 'html/index.html');
 module.exports = function (config, server) {
 
   require('../controllers/auth.js')(server);
-
   require('../controllers/feed.js')(server);
+  require('../controllers/ga.js')(server);
 
   server.route({
     method: 'GET',
