@@ -109,7 +109,7 @@ function getSharesData (request, reply) {
         batch.push(function (done) {
           var collection =  {
             url: row[0],
-            twitterShares: row[0].split('/')[5].replace(/-/g,' ')
+            title: row[0].split('/')[5].replace(/-/g,' ')
           }
 
           switch (row[1]) {
@@ -174,7 +174,7 @@ function getEventsData (request, reply) {
         batch.push(function (done) {
           var collection =  {
             url: row[0],
-            twitterShares: row[0].split('/')[5].replace(/-/g,' ')
+            title: row[0].split('/')[5].replace(/-/g,' ')
           }
 
           switch (row[1]) {
@@ -199,7 +199,10 @@ function getEventsData (request, reply) {
           }
 
           Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err, doc) {
-            if (err) return done(err);
+            if (err) {
+              console.log(err);
+              return done(err);
+            }
             done();
           });
         });

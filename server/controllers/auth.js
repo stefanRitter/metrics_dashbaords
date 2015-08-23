@@ -25,12 +25,12 @@ function loginTwitter (request, reply) {
       return User.create(userToCreate, function (err, newUser) {
         if (err || !newUser) { return reply(Boom.badImplementation(err)); }
         request.auth.session.set({_id: newUser._id});
-        reply.redirect('/app');
+        reply.redirect('/collections');
       });
     }
 
     request.auth.session.set({_id: user._id});
-    reply.redirect('/app');
+    reply.redirect('/collections');
   });
 }
 
@@ -43,7 +43,7 @@ function login (request, reply) {
     if (err) { return reply(Boom.badRequest(err)); }
 
     request.auth.session.set({_id: user._id});
-    reply.redirect('/app');
+    reply.redirect('/collections');
   });
 }
 
@@ -59,7 +59,7 @@ function join (request, reply) {
     if (err) { return reply(Boom.badRequest(err)); }
 
     request.auth.session.set({_id: user._id});
-    reply.redirect('/app');
+    reply.redirect('/collections');
   });
 }
 

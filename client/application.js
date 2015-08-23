@@ -14,10 +14,12 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
   $routeProvider
-    .when('/',        {templateUrl: '/assets/html/auth/login'})
-    .when('/login',   {templateUrl: '/assets/html/auth/login'})
-    .when('/join',    {templateUrl: '/assets/html/auth/join'})
-    .when('/app',    {templateUrl: '/assets/html/feed/show'})
+    .when('/',            {templateUrl: '/assets/html/auth/login'})
+    .when('/login',       {templateUrl: '/assets/html/auth/login'})
+    .when('/join',        {templateUrl: '/assets/html/auth/join'})
+    .when('/collections', {templateUrl: '/assets/html/feed/collections'})
+    .when('/countries',   {templateUrl: '/assets/html/feed/countries'})
+    .when('/weeks',       {templateUrl: '/assets/html/feed/weeks'})
 
     .otherwise({redirectTo: '/'});
 });

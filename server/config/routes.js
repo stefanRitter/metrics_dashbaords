@@ -8,7 +8,6 @@ console.log(publicPath + 'html/index.html');
 module.exports = function (config, server) {
 
   require('../controllers/auth.js')(server);
-  require('../controllers/app.js')(server);
   require('../controllers/collections.js')(server);
   require('../controllers/gaCollections.js')(server);
 

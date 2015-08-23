@@ -3,10 +3,13 @@
 var Collection = require('mongoose').model('Collection'),
     Boom = require('boom');
 
-var server = {};
+var server = {},
+    respondToHtml = require('../utils/respondToHTML');
 
 
 function getCollections (request, reply) {
+  if (respondToHtml(request, reply)) { return; }
+
   Collection.find({}, function (err, collections) {
     if (err) { return reply(Boom.badImplementation(err)); }
     reply(collections);
@@ -22,7 +25,15 @@ module.exports = function (_server) {
       path: '/collections',
       config: {
         handler: getCollections,
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     }
   ]
