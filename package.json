@@ -21,6 +21,7 @@
   "author": "stefanRitter",
   "license": "MIT",
   "dependencies": {
+    "batch": "^0.5.2",
     "bell": "^2.8.0",
     "boom": "^2.7.2",
     "crypto": "*",

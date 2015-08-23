@@ -11,7 +11,7 @@ module.exports = function (_server) {
   [
     {
       method: 'GET',
-      path: '/feed',
+      path: '/app',
       config: {
         handler: function (request, reply) {
           reply.file(publicPath + '/html/index.html');

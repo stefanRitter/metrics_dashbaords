@@ -6,7 +6,7 @@ angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope'
   function login (user) {
     currentUser = user;
     $rootScope.$emit('userLoggedIn');
-    $location.path('/feed');
+    $location.path('/app');
   }
 
   $http
