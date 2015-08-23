@@ -18,6 +18,8 @@ var SERVICE_ACCOUNT_EMAIL = '431222840368-vm8ghahfqkclispahsacsdv3l89se6ob@devel
 var SERVICE_ACCOUNT_KEY_FILE = pemPath + '/key.pem';
 
 var COLLECTIONS_VIEW_ID = 'ga:106745667';
+var START_DATE = '2015-08-24';
+var END_DATE = '2016-01-01';
 
 var authClient = new JWT(
     SERVICE_ACCOUNT_EMAIL,
@@ -37,8 +39,8 @@ function getBasicData (request, reply) {
     analytics.data.ga.get({
       auth: authClient,
       'ids': COLLECTIONS_VIEW_ID,
-      'start-date': '2015-01-19',
-      'end-date': '2016-01-19',
+      'start-date': START_DATE,
+      'end-date': END_DATE,
       'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage',
       'dimensions': 'ga:country',
     }, function (err, result) {
@@ -86,8 +88,8 @@ function getSharesData (request, reply) {
     analytics.data.ga.get({
       auth: authClient,
       'ids': COLLECTIONS_VIEW_ID,
-      'start-date': '2015-01-19',
-      'end-date': '2016-01-19',
+      'start-date': START_DATE,
+      'end-date': END_DATE,
       'max-results': 10000,
       'metrics': 'ga:socialInteractions',
       'dimensions': 'ga:country,ga:socialInteractionAction',
@@ -150,8 +152,8 @@ function getEventsData (request, reply) {
     analytics.data.ga.get({
       auth: authClient,
       'ids': COLLECTIONS_VIEW_ID,
-      'start-date': '2015-01-19',
-      'end-date': '2016-01-19',
+      'start-date': START_DATE,
+      'end-date': END_DATE,
       'max-results': 10000,
       'metrics': 'ga:uniqueEvents',
       'dimensions': 'ga:country,ga:eventCategory',
@@ -225,8 +227,8 @@ function getMostPopularCollection (request, reply) {
     analytics.data.ga.get({
       auth: authClient,
       'ids': COLLECTIONS_VIEW_ID,
-      'start-date': '2015-01-19',
-      'end-date': '2016-01-19',
+      'start-date': START_DATE,
+      'end-date': END_DATE,
       'metrics': 'ga:users',
       'dimensions': 'ga:country,ga:pagePath',
     }, function (err, result) {

@@ -27,7 +27,7 @@ div(ng-controller="collectionsController as vm")
       td {{collection.title}}
       td {{collection.views}}
       td {{collection.users}}
-      td {{collection.avgTime}}
+      td {{collection.avgTime | duration}}
       td {{collection.showMoreClicks}}
       td {{collection.externalClicks}}
       td {{collection.otherNavigationClicks}}

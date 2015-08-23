@@ -33,7 +33,7 @@ div(ng-controller="countriesController as vm")
       td {{vm.formatCollectionPath(country.collection1)}}
       td {{vm.formatCollectionPath(country.collection2)}}
       td {{vm.formatCollectionPath(country.collection3)}}
-      td {{country.avgTime}}
+      td {{country.avgTime | duration}}
       td {{country.showMoreClicks}}
       td {{country.externalClicks}}
       td {{country.otherNavigationClicks}}
