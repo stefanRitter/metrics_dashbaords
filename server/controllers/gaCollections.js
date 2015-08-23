@@ -98,6 +98,7 @@ function getSharesData (request, reply) {
         return reply(Boom.badImplementation(err));
       }
 
+      console.log('total shares:', result.totalResults);
       if (result.totalResults > 10000) {
         return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
       }
@@ -140,6 +141,79 @@ function getSharesData (request, reply) {
 }
 
 
+function getEventsData (request, reply) {
+  authClient.authorize(function (err, tokens) {
+    if (err) {
+      console.log('AUTH ERROR: ', err);
+      return reply(Boom.badImplementation(err));
+    }
+
+    analytics.data.ga.get({
+      auth: authClient,
+      'ids': COLLECTIONS_VIEW_ID,
+      'start-date': '2015-01-19',
+      'end-date': '2016-01-19',
+      'max-results': 10000,
+      'metrics': 'ga:uniqueEvents',
+      'dimensions': 'ga:pagePath,ga:eventCategory',
+    }, function (err, result) {
+
+      if (err) {
+        console.error('DATA ERROR', err);
+        return reply(Boom.badImplementation(err));
+      }
+
+      console.log('total events:', result.totalResults);
+      if (result.totalResults > 10000) {
+        return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
+      }
+
+      var batch = new Batch();
+
+      result.rows.forEach(function (row) {
+        batch.push(function (done) {
+          var collection =  {
+            url: row[0],
+            twitterShares: row[0].split('/')[5].replace(/-/g,' ')
+          }
+
+          switch (row[1]) {
+            case 'show more':
+              collection.showMoreClicks = row[2]
+              break;
+            case 'external link':
+              collection.cxternalClicks = row[2]
+              break;
+            case 'other navigation':
+              collection.otherNavigationClicks = row[2]
+              break;
+            case 'comment':
+              collection.comments = row[2]
+              break;
+            case 'upvote':
+              collection.upvotes = row[2]
+              break;
+            case 'bookmark':
+              collection.bookmarks = row[2]
+              break;
+          }
+
+          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err, doc) {
+            if (err) return done(err);
+            done();
+          });
+        });
+      });
+
+      batch.on('progress', function (e) {});
+
+      batch.end(function (err, links) {
+        reply(result.rows.length + ' events registered.');
+      });
+    });
+  });
+}
+
 module.exports = function (_server) {
   server = _server;
 
@@ -167,6 +241,14 @@ module.exports = function (_server) {
       path: '/ga/collections_shares',
       config: {
         handler: getSharesData,
+        auth: 'session'
+      }
+    },
+    {
+      method: 'GET',
+      path: '/ga/collections_events',
+      config: {
+        handler: getEventsData,
         auth: 'session'
       }
     }

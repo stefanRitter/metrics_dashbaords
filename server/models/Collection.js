@@ -17,10 +17,10 @@ schema = mongoose.Schema({
 
   showMoreClicks: Number,
   cxternalClicks: Number,
+  otherNavigationClicks: Number,
   comments: Number,
   upvotes: Number,
   bookmarks: Number,
-  otherNavigationClicks: Number,
 
   twitterShares: Number,
   facebookShares: Number,
