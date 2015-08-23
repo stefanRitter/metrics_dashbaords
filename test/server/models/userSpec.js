@@ -1,12 +1,13 @@
 'use strict';
 
 var Lab = require('lab');
+var Code = require('code');
 
 var lab = exports.lab = Lab.script();
 var describe = lab.describe;
 var it = lab.it;
 var beforeEach = lab.beforeEach;
-var expect = Lab.expect;
+var expect = Code.expect;
 
 require('../../utils/mongoUtils.js')(beforeEach);
 
