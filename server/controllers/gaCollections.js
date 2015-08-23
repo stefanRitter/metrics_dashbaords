@@ -182,7 +182,7 @@ function getEventsData (request, reply) {
               collection.showMoreClicks = row[2]
               break;
             case 'external link':
-              collection.cxternalClicks = row[2]
+              collection.externalClicks = row[2]
               break;
             case 'other navigation':
               collection.otherNavigationClicks = row[2]

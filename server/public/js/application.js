@@ -26942,8 +26942,8 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
 angular.module('app').run(['$rootScope', '$location', 'currentUser', function ($rootScope, $location) {
   'use strict';
 
-  $rootScope.$on('$routeChangeSuccess', function(){
-    window.ga('send', 'pageview', $location.path());
+  $rootScope.$on('$routeChangeSuccess', function () {
+    //window.ga('send', 'pageview', $location.path());
   });
 }]);
 
@@ -26990,6 +26990,7 @@ angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope'
     .get('/session', {})
     .error(function () {
       console.log('user not authenticated');
+      $location.path('/login');
     })
     .success(login);
 
@@ -26999,4 +27000,32 @@ angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope'
     },
     login: login
   };
+}]);
+
+angular.module('app').controller('collectionsController', ['$http', function ($http) {
+  'use strict';
+
+  var vm = this;
+  vm.collections = [];
+  vm.orderFilter = 'views';
+  vm.orderFilterDirection = true;
+
+  vm.changeFilter = function (filter) {
+    if (vm.orderFilter === filter) {
+      vm.orderFilterDirection = !vm.orderFilterDirection;
+    } else {
+      vm.orderFilter = filter;
+      vm.orderFilterDirection = true;
+    }
+  };
+
+  $http
+    .get('/collections', {})
+    .error(function (err) {
+      console.log('error', err);
+    })
+    .success(function (result) {
+      vm.collections = result;
+    });
+
 }]);
