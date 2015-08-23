@@ -10,6 +10,7 @@ module.exports = function (config, server) {
   require('../controllers/auth.js')(server);
   require('../controllers/collections.js')(server);
   require('../controllers/countries.js')(server);
+  require('../controllers/weeks.js')(server);
 
   require('../controllers/gaCollections.js')(server);
   require('../controllers/gaCountries.js')(server);
