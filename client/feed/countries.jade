@@ -1,30 +1,30 @@
 div(ng-controller="countriesController as vm")
-  .margin-top-big.center
+  .margin-top.center
     h1.margin-top.bold 
-      a(href="/weeks") Weeks
+      a(href="/weeks") Weekly
       | &nbsp;&nbsp;
-      a(href="/collections") Collections
+      a(href="/collections") By Collection
       | &nbsp;&nbsp;
-      a.underline(href="/countries") Countries
+      a.underline(href="/countries") By Country
 
   table.margin-top-big
     tr
-      th(ng-click="vm.changeFilter('name')") Country
-      th(ng-click="vm.changeFilter('views')") Views
-      th(ng-click="vm.changeFilter('views')") Users
-      th(ng-click="vm.changeFilter('collection1')") 1. most read collection
-      th(ng-click="vm.changeFilter('collection2')") 2. most read collection
-      th(ng-click="vm.changeFilter('collection3')") 3. most read collection
-      th(ng-click="vm.changeFilter('avgTime')") Avg. time
-      th(ng-click="vm.changeFilter('showMoreClicks')") Show more clicks
-      th(ng-click="vm.changeFilter('externalClicks')") External clicks
-      th(ng-click="vm.changeFilter('otherNavigationClicks')") Prev/Next clicks
-      th(ng-click="vm.changeFilter('comments')") Comments
-      th(ng-click="vm.changeFilter('upvotes')") Upvotes
-      th(ng-click="vm.changeFilter('bookmarks')") Bookmarks
-      th(ng-click="vm.changeFilter('twitterShares')") Tweets
-      th(ng-click="vm.changeFilter('facebookShares')") FB shares
-      th(ng-click="vm.changeFilter('sharelineShares')") Sharelines
+      th(ng-click="vm.changeFilter('name')", ng-class="{'active': vm.orderFilter=='name', 'up': vm.orderFilterDirection}") Country
+      th(ng-click="vm.changeFilter('views')", ng-class="{'active': vm.orderFilter=='views', 'up': vm.orderFilterDirection}") Views
+      th(ng-click="vm.changeFilter('users')", ng-class="{'active': vm.orderFilter=='users', 'up': vm.orderFilterDirection}") Users
+      th(ng-click="vm.changeFilter('collection1')", ng-class="{'active': vm.orderFilter=='collection1', 'up': vm.orderFilterDirection}") Most read collection
+      th(ng-click="vm.changeFilter('collection2')", ng-class="{'active': vm.orderFilter=='collection2', 'up': vm.orderFilterDirection}") 2. most read collection
+      th(ng-click="vm.changeFilter('collection3')", ng-class="{'active': vm.orderFilter=='collection3', 'up': vm.orderFilterDirection}") 3. most read collection
+      th(ng-click="vm.changeFilter('avgTime')", ng-class="{'active': vm.orderFilter=='avgTime', 'up': vm.orderFilterDirection}") Avg. time
+      th(ng-click="vm.changeFilter('showMoreClicks')", ng-class="{'active': vm.orderFilter=='showMoreClicks', 'up': vm.orderFilterDirection}") Show more clicks
+      th(ng-click="vm.changeFilter('externalClicks')", ng-class="{'active': vm.orderFilter=='externalClicks', 'up': vm.orderFilterDirection}") External clicks
+      th(ng-click="vm.changeFilter('otherNavigationClicks')", ng-class="{'active': vm.orderFilter=='otherNavigationClicks', 'up': vm.orderFilterDirection}") Prev/Next clicks
+      th(ng-click="vm.changeFilter('comments')", ng-class="{'active': vm.orderFilter=='comments', 'up': vm.orderFilterDirection}") Comments
+      th(ng-click="vm.changeFilter('upvotes')", ng-class="{'active': vm.orderFilter=='upvotes', 'up': vm.orderFilterDirection}") Upvotes
+      th(ng-click="vm.changeFilter('bookmarks')", ng-class="{'active': vm.orderFilter=='bookmarks', 'up': vm.orderFilterDirection}") Bookmarks
+      th(ng-click="vm.changeFilter('twitterShares')", ng-class="{'active': vm.orderFilter=='twitterShares', 'up': vm.orderFilterDirection}") Tweets
+      th(ng-click="vm.changeFilter('facebookShares')", ng-class="{'active': vm.orderFilter=='facebookShares', 'up': vm.orderFilterDirection}") FB shares
+      th(ng-click="vm.changeFilter('sharelineShares')", ng-class="{'active': vm.orderFilter=='sharelineShares', 'up': vm.orderFilterDirection}") Sharelines
     
     tr(ng-repeat="country in (vm.countries | orderBy: vm.orderFilter:vm.orderFilterDirection)")
       td {{country.name}}
