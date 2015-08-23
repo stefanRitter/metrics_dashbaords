@@ -30,7 +30,7 @@ var authClient = new JWT(
 
 
 function basicCollectionsData (request, reply) {
-  authClient.authorize(function (err, tokens) {
+  authClient.authorize(function (err) {
     if (err) {
       console.log('AUTH ERROR: ', err);
       return reply(Boom.badImplementation(err));
@@ -41,7 +41,7 @@ function basicCollectionsData (request, reply) {
       'ids': COLLECTIONS_VIEW_ID,
       'start-date': START_DATE,
       'end-date': END_DATE,
-      'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage',
+      'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage,ga:bounceRate',
       'dimensions': 'ga:pagePath',
     }, function (err, result) {
 
@@ -60,18 +60,21 @@ function basicCollectionsData (request, reply) {
             views: row[1],
             users: row[2],
             avgTime: row[3]
-          }
+          };
 
-          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err, doc) {
-            if (err) return done(err);
+          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err) {
+            if (err) {
+              console.log(err);
+              return done(err);
+            }
             done();
           });
         });
       });
 
-      batch.on('progress', function (e) {});
+      batch.on('progress', function () {});
 
-      batch.end(function (err, links) {
+      batch.end(function () {
         reply(result.rows.length + ' collections created / updated.');
       });
     });
@@ -80,7 +83,7 @@ function basicCollectionsData (request, reply) {
 
 
 function getSharesData (request, reply) {
-  authClient.authorize(function (err, tokens) {
+  authClient.authorize(function (err) {
     if (err) {
       console.log('AUTH ERROR: ', err);
       return reply(Boom.badImplementation(err));
@@ -113,30 +116,33 @@ function getSharesData (request, reply) {
           var collection =  {
             url: row[0],
             title: row[0].split('/')[5].replace(/-/g,' ')
-          }
+          };
 
           switch (row[1]) {
             case 'tweet':
-              collection.twitterShares = row[2]
+              collection.twitterShares = row[2];
               break;
             case 'share':
-              collection.facebookShares = row[2]
+              collection.facebookShares = row[2];
               break;
             case 'shareline':
-              collection.sharelineShares = row[2]
+              collection.sharelineShares = row[2];
               break;
           }
 
-          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err, doc) {
-            if (err) return done(err);
+          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err) {
+            if (err) {
+              console.log(err);
+              return done(err);
+            }
             done();
           });
         });
       });
 
-      batch.on('progress', function (e) {});
+      batch.on('progress', function () {});
 
-      batch.end(function (err, links) {
+      batch.end(function () {
         reply(result.rows.length + ' share events registered.');
       });
     });
@@ -145,7 +151,7 @@ function getSharesData (request, reply) {
 
 
 function getEventsData (request, reply) {
-  authClient.authorize(function (err, tokens) {
+  authClient.authorize(function (err) {
     if (err) {
       console.log('AUTH ERROR: ', err);
       return reply(Boom.badImplementation(err));
@@ -178,30 +184,30 @@ function getEventsData (request, reply) {
           var collection =  {
             url: row[0],
             title: row[0].split('/')[5].replace(/-/g,' ')
-          }
+          };
 
           switch (row[1]) {
             case 'show more':
-              collection.showMoreClicks = row[2]
+              collection.showMoreClicks = row[2];
               break;
             case 'external link':
-              collection.externalClicks = row[2]
+              collection.externalClicks = row[2];
               break;
             case 'other navigation':
-              collection.otherNavigationClicks = row[2]
+              collection.otherNavigationClicks = row[2];
               break;
             case 'comment':
-              collection.comments = row[2]
+              collection.comments = row[2];
               break;
             case 'upvote':
-              collection.upvotes = row[2]
+              collection.upvotes = row[2];
               break;
             case 'bookmark':
-              collection.bookmarks = row[2]
+              collection.bookmarks = row[2];
               break;
           }
 
-          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err, doc) {
+          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err) {
             if (err) {
               console.log(err);
               return done(err);
@@ -211,9 +217,9 @@ function getEventsData (request, reply) {
         });
       });
 
-      batch.on('progress', function (e) {});
+      batch.on('progress', function () {});
 
-      batch.end(function (err, links) {
+      batch.end(function () {
         reply(result.rows.length + ' events registered.');
       });
     });
