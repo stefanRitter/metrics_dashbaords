@@ -8,7 +8,7 @@ var Boom = require('boom'),
 
 var server = {};
 
-var Collection = require('mongoose').model('Collection');
+var Country = require('mongoose').model('Country');
 
 var googleapis = require('googleapis'),
     JWT = googleapis.auth.JWT,
@@ -27,7 +27,7 @@ var authClient = new JWT(
 );
 
 
-function basicCollectionsData (request, reply) {
+function getBasicData (request, reply) {
   authClient.authorize(function (err, tokens) {
     if (err) {
       console.log('AUTH ERROR: ', err);
@@ -40,7 +40,7 @@ function basicCollectionsData (request, reply) {
       'start-date': '2015-01-19',
       'end-date': '2016-01-19',
       'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage',
-      'dimensions': 'ga:pagePath',
+      'dimensions': 'ga:country',
     }, function (err, result) {
 
       if (err) {
@@ -52,15 +52,14 @@ function basicCollectionsData (request, reply) {
 
       result.rows.forEach(function (row) {
         batch.push(function (done) {
-          var collection =  {
-            url: row[0],
-            title: row[0].split('/')[5].replace(/-/g,' '),
+          var model =  {
+            name: row[0],
             views: row[1],
             users: row[2],
             avgTime: row[3]
           }
 
-          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err, doc) {
+          Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err, doc) {
             if (err) return done(err);
             done();
           });
@@ -70,7 +69,7 @@ function basicCollectionsData (request, reply) {
       batch.on('progress', function (e) {});
 
       batch.end(function (err, links) {
-        reply(result.rows.length + ' collections created / updated.');
+        reply(result.rows.length + ' countries created / updated.');
       });
     });
   });
@@ -91,7 +90,7 @@ function getSharesData (request, reply) {
       'end-date': '2016-01-19',
       'max-results': 10000,
       'metrics': 'ga:socialInteractions',
-      'dimensions': 'ga:pagePath,ga:socialInteractionAction',
+      'dimensions': 'ga:country,ga:socialInteractionAction',
     }, function (err, result) {
 
       if (err) {
@@ -108,24 +107,23 @@ function getSharesData (request, reply) {
 
       result.rows.forEach(function (row) {
         batch.push(function (done) {
-          var collection =  {
-            url: row[0],
-            title: row[0].split('/')[5].replace(/-/g,' ')
+          var model =  {
+            name: row[0]
           }
 
           switch (row[1]) {
             case 'tweet':
-              collection.twitterShares = row[2]
+              model.twitterShares = row[2]
               break;
             case 'share':
-              collection.facebookShares = row[2]
+              model.facebookShares = row[2]
               break;
             case 'shareline':
-              collection.sharelineShares = row[2]
+              model.sharelineShares = row[2]
               break;
           }
 
-          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err, doc) {
+          Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err, doc) {
             if (err) return done(err);
             done();
           });
@@ -156,7 +154,7 @@ function getEventsData (request, reply) {
       'end-date': '2016-01-19',
       'max-results': 10000,
       'metrics': 'ga:uniqueEvents',
-      'dimensions': 'ga:pagePath,ga:eventCategory',
+      'dimensions': 'ga:country,ga:eventCategory',
     }, function (err, result) {
 
       if (err) {
@@ -174,8 +172,7 @@ function getEventsData (request, reply) {
       result.rows.forEach(function (row) {
         batch.push(function (done) {
           var collection =  {
-            url: row[0],
-            title: row[0].split('/')[5].replace(/-/g,' ')
+            name: row[0]
           }
 
           switch (row[1]) {
@@ -199,7 +196,7 @@ function getEventsData (request, reply) {
               break;
           }
 
-          Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err, doc) {
+          Country.findOneAndUpdate({name: collection.name}, collection, {upsert: true}, function (err, doc) {
             if (err) {
               console.log(err);
               return done(err);
@@ -224,25 +221,15 @@ module.exports = function (_server) {
   [
     {
       method: 'GET',
-      path: '/ga',
+      path: '/ga/countries',
       config: {
-        handler: {
-          file: publicPath + '/html/ga/index.html'
-        },
+        handler: getBasicData,
         auth: 'session'
       }
     },
     {
       method: 'GET',
-      path: '/ga/collections',
-      config: {
-        handler: basicCollectionsData,
-        auth: 'session'
-      }
-    },
-    {
-      method: 'GET',
-      path: '/ga/collections_shares',
+      path: '/ga/countries_shares',
       config: {
         handler: getSharesData,
         auth: 'session'
@@ -250,7 +237,7 @@ module.exports = function (_server) {
     },
     {
       method: 'GET',
-      path: '/ga/collections_events',
+      path: '/ga/countries_events',
       config: {
         handler: getEventsData,
         auth: 'session'

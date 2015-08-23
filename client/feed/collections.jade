@@ -12,6 +12,7 @@ div(ng-controller="collectionsController as vm")
       th(ng-click="vm.changeFilter('title')") Slug title
       //th(ng-click="vm.changeFilter('url')") url
       th(ng-click="vm.changeFilter('views')") Views
+      th(ng-click="vm.changeFilter('views')") Users
       th(ng-click="vm.changeFilter('avgTime')") Avg. time
       th(ng-click="vm.changeFilter('showMoreClicks')") Show more clicks
       th(ng-click="vm.changeFilter('externalClicks')") External clicks
@@ -27,6 +28,7 @@ div(ng-controller="collectionsController as vm")
       td {{collection.title}}
       //td {{collection.url}}
       td {{collection.views}}
+      td {{collection.users}}
       td {{collection.avgTime}}
       td {{collection.showMoreClicks}}
       td {{collection.externalClicks}}

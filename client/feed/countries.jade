@@ -1,8 +1,39 @@
-.center
-  .margin-top-big
+div(ng-controller="countriesController as vm")
+  .margin-top-big.center
     h1.margin-top.bold 
       a(href="/weeks") Weeks
       | &nbsp;&nbsp;
       a(href="/collections") Collections
       | &nbsp;&nbsp;
       a.underline(href="/countries") Countries
+
+  table.margin-top-big
+    tr
+      th(ng-click="vm.changeFilter('name')") Name
+      th(ng-click="vm.changeFilter('views')") Views
+      th(ng-click="vm.changeFilter('views')") Users
+      th(ng-click="vm.changeFilter('avgTime')") Avg. time
+      th(ng-click="vm.changeFilter('showMoreClicks')") Show more clicks
+      th(ng-click="vm.changeFilter('externalClicks')") External clicks
+      th(ng-click="vm.changeFilter('otherNavigationClicks')") Prev/Next clicks
+      th(ng-click="vm.changeFilter('comments')") Comments
+      th(ng-click="vm.changeFilter('upvotes')") Upvotes
+      th(ng-click="vm.changeFilter('bookmarks')") Bookmarks
+      th(ng-click="vm.changeFilter('twitterShares')") Tweets
+      th(ng-click="vm.changeFilter('facebookShares')") FB shares
+      th(ng-click="vm.changeFilter('sharelineShares')") Sharelines
+    
+    tr(ng-repeat="country in (vm.countries | orderBy: vm.orderFilter:vm.orderFilterDirection)")
+      td {{country.name}}
+      td {{country.views}}
+      td {{country.users}}
+      td {{country.avgTime}}
+      td {{country.showMoreClicks}}
+      td {{country.externalClicks}}
+      td {{country.otherNavigationClicks}}
+      td {{country.comments}}
+      td {{country.upvotes}}
+      td {{country.bookmarks}}
+      td {{country.twitterShares}}
+      td {{country.facebookShares}}
+      td {{country.sharelineShares}}

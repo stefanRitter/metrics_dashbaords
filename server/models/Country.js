@@ -4,21 +4,26 @@ var mongoose = require('mongoose'),
     schema;
 
 schema = mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    index: true,
+    unique: true
+  },
 
-  views: Number,
-  avgTime: String,
+  views: {type: Number, default: 0},
+  users: {type: Number, default: 0},
+  avgTime: {type: Number, default: 0},
 
-  showMoreClicks: Number,
-  cxternalClicks: Number,
-  comments: Number,
-  upvotes: Number,
-  bookmarks: Number,
-  otherNavigationClicks: Number,
+  showMoreClicks: {type: Number, default: 0},
+  externalClicks: {type: Number, default: 0},
+  otherNavigationClicks: {type: Number, default: 0},
+  comments: {type: Number, default: 0},
+  upvotes: {type: Number, default: 0},
+  bookmarks: {type: Number, default: 0},
 
-  twitterShares: Number,
-  facebookShares: Number,
-  sharelineShares: Number
+  twitterShares: {type: Number, default: 0},
+  facebookShares: {type: Number, default: 0},
+  sharelineShares: {type: Number, default: 0}
 });
 
 module.exports = mongoose.model('Country', schema);

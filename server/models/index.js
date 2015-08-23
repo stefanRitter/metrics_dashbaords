@@ -2,3 +2,4 @@
 
 require('./User');
 require('./Collection');
+require('./Country');
