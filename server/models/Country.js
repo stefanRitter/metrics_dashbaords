@@ -23,7 +23,11 @@ schema = mongoose.Schema({
 
   twitterShares: {type: Number, default: 0},
   facebookShares: {type: Number, default: 0},
-  sharelineShares: {type: Number, default: 0}
+  sharelineShares: {type: Number, default: 0},
+
+  collection1: String,
+  collection2: String,
+  collection3: String
 });
 
 module.exports = mongoose.model('Country', schema);

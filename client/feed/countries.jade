@@ -9,9 +9,12 @@ div(ng-controller="countriesController as vm")
 
   table.margin-top-big
     tr
-      th(ng-click="vm.changeFilter('name')") Name
+      th(ng-click="vm.changeFilter('name')") Country
       th(ng-click="vm.changeFilter('views')") Views
       th(ng-click="vm.changeFilter('views')") Users
+      th(ng-click="vm.changeFilter('collection1')") 1. most read collection
+      th(ng-click="vm.changeFilter('collection2')") 2. most read collection
+      th(ng-click="vm.changeFilter('collection3')") 3. most read collection
       th(ng-click="vm.changeFilter('avgTime')") Avg. time
       th(ng-click="vm.changeFilter('showMoreClicks')") Show more clicks
       th(ng-click="vm.changeFilter('externalClicks')") External clicks
@@ -27,6 +30,9 @@ div(ng-controller="countriesController as vm")
       td {{country.name}}
       td {{country.views}}
       td {{country.users}}
+      td {{vm.formatCollectionPath(country.collection1)}}
+      td {{vm.formatCollectionPath(country.collection2)}}
+      td {{vm.formatCollectionPath(country.collection3)}}
       td {{country.avgTime}}
       td {{country.showMoreClicks}}
       td {{country.externalClicks}}

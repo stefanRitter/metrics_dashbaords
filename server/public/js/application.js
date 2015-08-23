@@ -27047,6 +27047,10 @@ angular.module('app').controller('countriesController', ['$http', function ($htt
     }
   };
 
+  vm.formatCollectionPath = function (path) {
+    return path.split('/')[5].replace(/-/g,' ');
+  };
+
   $http
     .get('/countries', {})
     .error(function (err) {

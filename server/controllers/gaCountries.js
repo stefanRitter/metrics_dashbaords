@@ -215,6 +215,70 @@ function getEventsData (request, reply) {
   });
 }
 
+function getMostPopularCollection (request, reply) {
+  authClient.authorize(function (err, tokens) {
+    if (err) {
+      console.log('AUTH ERROR: ', err);
+      return reply(Boom.badImplementation(err));
+    }
+
+    analytics.data.ga.get({
+      auth: authClient,
+      'ids': COLLECTIONS_VIEW_ID,
+      'start-date': '2015-01-19',
+      'end-date': '2016-01-19',
+      'metrics': 'ga:users',
+      'dimensions': 'ga:country,ga:pagePath',
+    }, function (err, result) {
+
+      if (err) {
+        console.error('DATA ERROR', err);
+        return reply(Boom.badImplementation(err));
+      }
+
+
+      var matrix = {};
+      result.rows.forEach(function (row) {
+        if (!matrix[row[0]]) { matrix[row[0]] = []; }
+
+        matrix[row[0]].push({
+          users: row[2],
+          collection: row[1]
+        });
+      });
+
+      var batch = new Batch();
+
+      Object.keys(matrix).forEach(function (country) {
+        // sort by most popular
+        matrix[country].sort(function (a, b) {
+          return b.users - a.users;
+        });
+
+        batch.push(function (done) {
+          var model =  {
+            name: country,
+            collection1: matrix[country][0].collection,
+            collection2: (matrix[country][1] ? matrix[country][1] : {}).collection,
+            collection3: (matrix[country][2] ? matrix[country][2] : {}).collection,
+          }
+
+          Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err, doc) {
+            if (err) return done(err);
+            done();
+          });
+        });
+      });
+
+      batch.on('progress', function (e) {});
+
+      batch.end(function (err, links) {
+        reply(result.rows.length + ' collections by country processed.');
+      });
+    });
+  });
+}
+
 module.exports = function (_server) {
   server = _server;
 
@@ -240,6 +304,14 @@ module.exports = function (_server) {
       path: '/ga/countries_events',
       config: {
         handler: getEventsData,
+        auth: 'session'
+      }
+    },
+    {
+      method: 'GET',
+      path: '/ga/countries_popular',
+      config: {
+        handler: getMostPopularCollection,
         auth: 'session'
       }
     }
