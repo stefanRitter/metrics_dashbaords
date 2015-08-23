@@ -26928,11 +26928,11 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
   $routeProvider
-    .when('/',        {templateUrl: '/assets/html/landingpage/show'})
+    .when('/',        {templateUrl: '/assets/html/auth/login'})
     .when('/login',   {templateUrl: '/assets/html/auth/login'})
     .when('/join',    {templateUrl: '/assets/html/auth/join'})
     .when('/feed',    {templateUrl: '/assets/html/feed/show'})
-    
+
     .otherwise({redirectTo: '/'});
 });
 
