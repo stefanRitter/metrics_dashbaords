@@ -59,7 +59,8 @@ function basicCollectionsData (request, reply) {
             title: row[0].split('/')[5].replace(/-/g,' '),
             views: row[1],
             users: row[2],
-            avgTime: row[3]
+            avgTime: row[3],
+            bounceRate: row[4]
           };
 
           Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err) {

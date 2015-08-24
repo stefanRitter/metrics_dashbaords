@@ -12,10 +12,11 @@ div(ng-controller="countriesController as vm")
       th(ng-click="vm.changeFilter('name')", ng-class="{'active': vm.orderFilter=='name', 'up': vm.orderFilterDirection}") Country
       th(ng-click="vm.changeFilter('views')", ng-class="{'active': vm.orderFilter=='views', 'up': vm.orderFilterDirection}") Views
       th(ng-click="vm.changeFilter('users')", ng-class="{'active': vm.orderFilter=='users', 'up': vm.orderFilterDirection}") Users
+      th(ng-click="vm.changeFilter('avgTime')", ng-class="{'active': vm.orderFilter=='avgTime', 'up': vm.orderFilterDirection}") Avg. time
+      th(ng-click="vm.changeFilter('bounceRate')", ng-class="{'active': vm.orderFilter=='bounceRate', 'up': vm.orderFilterDirection}") Bounce rate
       th(ng-click="vm.changeFilter('collection1')", ng-class="{'active': vm.orderFilter=='collection1', 'up': vm.orderFilterDirection}") Most read collection
       th(ng-click="vm.changeFilter('collection2')", ng-class="{'active': vm.orderFilter=='collection2', 'up': vm.orderFilterDirection}") 2. most read collection
       th(ng-click="vm.changeFilter('collection3')", ng-class="{'active': vm.orderFilter=='collection3', 'up': vm.orderFilterDirection}") 3. most read collection
-      th(ng-click="vm.changeFilter('avgTime')", ng-class="{'active': vm.orderFilter=='avgTime', 'up': vm.orderFilterDirection}") Avg. time
       th(ng-click="vm.changeFilter('showMoreClicks')", ng-class="{'active': vm.orderFilter=='showMoreClicks', 'up': vm.orderFilterDirection}") More clicks
       th(ng-click="vm.changeFilter('externalClicks')", ng-class="{'active': vm.orderFilter=='externalClicks', 'up': vm.orderFilterDirection}") External clicks
       th(ng-click="vm.changeFilter('otherNavigationClicks')", ng-class="{'active': vm.orderFilter=='otherNavigationClicks', 'up': vm.orderFilterDirection}") Prev/Next clicks
@@ -30,10 +31,11 @@ div(ng-controller="countriesController as vm")
       td {{country.name}}
       td {{country.views}}
       td {{country.users}}
+      td {{country.avgTime | duration}}
+      td {{country.bounceRate}}%
       td {{vm.formatCollectionPath(country.collection1)}}
       td {{vm.formatCollectionPath(country.collection2)}}
       td {{vm.formatCollectionPath(country.collection3)}}
-      td {{country.avgTime | duration}}
       td {{country.showMoreClicks}}
       td {{country.externalClicks}}
       td {{country.otherNavigationClicks}}

@@ -5,8 +5,11 @@ var mongoose = require('mongoose'),
 
 schema = mongoose.Schema({
   year: {type: Number, default: 2015},
-  calendarWeek: { type: Number },
-
+  calendarWeek: {
+    type: Number,
+    index: true,
+    unique: true
+  },
   startDate: {
     type: String,
     index: true,
@@ -21,6 +24,7 @@ schema = mongoose.Schema({
   views: {type: Number, default: 0},
   users: {type: Number, default: 0},
   avgTime: {type: Number, default: 0},
+  bounceRate: {type: Number, default: 0},
 
   showMoreClicks: {type: Number, default: 0},
   externalClicks: {type: Number, default: 0},

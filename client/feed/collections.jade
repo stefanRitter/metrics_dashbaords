@@ -13,6 +13,7 @@ div(ng-controller="collectionsController as vm")
       th(ng-click="vm.changeFilter('views')", ng-class="{'active': vm.orderFilter=='views', 'up': vm.orderFilterDirection}") Views
       th(ng-click="vm.changeFilter('users')", ng-class="{'active': vm.orderFilter=='users', 'up': vm.orderFilterDirection}") Users
       th(ng-click="vm.changeFilter('avgTime')", ng-class="{'active': vm.orderFilter=='avgTime', 'up': vm.orderFilterDirection}") Avg. time
+      th(ng-click="vm.changeFilter('bounceRate')", ng-class="{'active': vm.orderFilter=='bounceRate', 'up': vm.orderFilterDirection}") Bounce rate
       th(ng-click="vm.changeFilter('showMoreClicks')", ng-class="{'active': vm.orderFilter=='showMoreClicks', 'up': vm.orderFilterDirection}") More clicks
       th(ng-click="vm.changeFilter('externalClicks')", ng-class="{'active': vm.orderFilter=='externalClicks', 'up': vm.orderFilterDirection}") External clicks
       th(ng-click="vm.changeFilter('otherNavigationClicks')", ng-class="{'active': vm.orderFilter=='otherNavigationClicks', 'up': vm.orderFilterDirection}") Prev/Next clicks
@@ -28,6 +29,7 @@ div(ng-controller="collectionsController as vm")
       td {{collection.views}}
       td {{collection.users}}
       td {{collection.avgTime | duration}}
+      td {{collection.bounceRate}}%
       td {{collection.showMoreClicks}}
       td {{collection.externalClicks}}
       td {{collection.otherNavigationClicks}}

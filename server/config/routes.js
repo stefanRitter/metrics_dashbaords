@@ -14,6 +14,7 @@ module.exports = function (config, server) {
 
   require('../controllers/gaCollections.js')(server);
   require('../controllers/gaCountries.js')(server);
+  require('../controllers/gaWeeks.js')(server);
 
   server.route({
     method: 'GET',

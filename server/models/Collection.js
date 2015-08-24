@@ -15,6 +15,7 @@ schema = mongoose.Schema({
   views: {type: Number, default: 0},
   users: {type: Number, default: 0},
   avgTime: {type: Number, default: 0},
+  bounceRate: {type: Number, default: 0},
 
   showMoreClicks: {type: Number, default: 0},
   externalClicks: {type: Number, default: 0},

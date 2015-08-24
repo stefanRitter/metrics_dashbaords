@@ -7,7 +7,7 @@ var Boom = require('boom'),
 
 var server = {};
 
-var Country = require('mongoose').model('Country');
+var Week = require('mongoose').model('Week');
 
 var googleapis = require('googleapis'),
     JWT = googleapis.auth.JWT,
@@ -16,9 +16,7 @@ var googleapis = require('googleapis'),
 var SERVICE_ACCOUNT_EMAIL = '431222840368-vm8ghahfqkclispahsacsdv3l89se6ob@developer.gserviceaccount.com';
 var SERVICE_ACCOUNT_KEY_FILE = pemPath + '/key.pem';
 
-var COLLECTIONS_VIEW_ID = 'ga:106745667';
-var START_DATE = '2015-08-24';
-var END_DATE = '2016-01-01';
+var ALL_DATA_VIEW_ID = 'ga:106585530';
 
 var authClient = new JWT(
     SERVICE_ACCOUNT_EMAIL,
@@ -28,7 +26,49 @@ var authClient = new JWT(
 );
 
 
+
+function getDates () {
+  var today  = new Date(),
+      target = new Date();
+
+  // ISO week date weeks start on monday
+  // so correct the day number
+  var dayNr = (today.getDay() + 6) % 7;
+
+  var monday = new Date(today.setDate(today.getDate() - dayNr));
+  var sunday = new Date(today.setDate(today.getDate() - dayNr + 6));
+
+  // Set the target to the thursday of this week so the
+  // target date is in the right year
+  target.setDate(today.getDate() - dayNr + 3);
+
+  // ISO 8601 states that week 1 is the week
+  // with january 4th in it
+  var jan4 = new Date(target.getFullYear(), 0, 4);
+
+  // Number of days between target date and january 4th
+  var dayDiff = (target - jan4) / 86400000;
+
+  // Calculate week number: Week 1 (january 4th) plus the
+  // number of weeks between target date and january 4th
+  var weekNr = Math.ceil(dayDiff / 7);
+
+  function preZero (num) {
+    return num <= 9 ? '0'+num : num;
+  }
+
+  return {
+    calendarWeek: weekNr,
+    year: today.getYear(),
+    startDate: monday.getFullYear()+'-'+preZero(monday.getMonth()+1)+'-'+preZero(monday.getDate()),
+    endDate: sunday.getFullYear()+'-'+preZero(sunday.getMonth()+1)+'-'+preZero(sunday.getDate())
+  };
+}
+
+
 function getBasicData (request, reply) {
+  var currentWeek = getDates();
+
   authClient.authorize(function (err) {
     if (err) {
       console.log('AUTH ERROR: ', err);
@@ -37,11 +77,10 @@ function getBasicData (request, reply) {
 
     analytics.data.ga.get({
       auth: authClient,
-      'ids': COLLECTIONS_VIEW_ID,
-      'start-date': START_DATE,
-      'end-date': END_DATE,
-      'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage,ga:bounceRate',
-      'dimensions': 'ga:country',
+      'ids': ALL_DATA_VIEW_ID,
+      'start-date': currentWeek.startDate,
+      'end-date': currentWeek.endDate,
+      'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage,ga:bounceRate'
     }, function (err, result) {
 
       if (err) {
@@ -49,32 +88,19 @@ function getBasicData (request, reply) {
         return reply(Boom.badImplementation(err));
       }
 
-      var batch = new Batch();
+      var weekData = result.rows[0];
 
-      result.rows.forEach(function (row) {
-        batch.push(function (done) {
-          var model =  {
-            name: row[0],
-            views: row[1],
-            users: row[2],
-            avgTime: row[3],
-            bounceRate: row[4]
-          };
+      currentWeek.views = weekData[0];
+      currentWeek.users = weekData[1];
+      currentWeek.avgTime = weekData[2];
+      currentWeek.bounceRate = weekData[3];
 
-          Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
-            if (err) {
-              console.log(err);
-              return done(err);
-            }
-            done();
-          });
-        });
-      });
-
-      batch.on('progress', function () {});
-
-      batch.end(function () {
-        reply(result.rows.length + ' countries created / updated.');
+      Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
+        if (err) {
+          console.error(err);
+          return reply(Boom.badImplementation(err));
+        }
+        reply(result.rows.length + ' week created / updated.');
       });
     });
   });
@@ -82,6 +108,8 @@ function getBasicData (request, reply) {
 
 
 function getSharesData (request, reply) {
+  var currentWeek = getDates();
+
   authClient.authorize(function (err) {
     if (err) {
       console.log('AUTH ERROR: ', err);
@@ -90,9 +118,9 @@ function getSharesData (request, reply) {
 
     analytics.data.ga.get({
       auth: authClient,
-      'ids': COLLECTIONS_VIEW_ID,
-      'start-date': START_DATE,
-      'end-date': END_DATE,
+      'ids': ALL_DATA_VIEW_ID,
+      'start-date': currentWeek.startDate,
+      'end-date': currentWeek.endDate,
       'max-results': 10000,
       'metrics': 'ga:socialInteractions',
       'dimensions': 'ga:country,ga:socialInteractionAction',
@@ -128,7 +156,7 @@ function getSharesData (request, reply) {
               break;
           }
 
-          Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
+          Week.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
             if (err) {
               console.log(err);
               return done(err);
@@ -149,6 +177,8 @@ function getSharesData (request, reply) {
 
 
 function getEventsData (request, reply) {
+  var currentWeek = getDates();
+
   authClient.authorize(function (err) {
     if (err) {
       console.log('AUTH ERROR: ', err);
@@ -157,9 +187,9 @@ function getEventsData (request, reply) {
 
     analytics.data.ga.get({
       auth: authClient,
-      'ids': COLLECTIONS_VIEW_ID,
-      'start-date': START_DATE,
-      'end-date': END_DATE,
+      'ids': ALL_DATA_VIEW_ID,
+      'start-date': currentWeek.startDate,
+      'end-date': currentWeek.endDate,
       'max-results': 10000,
       'metrics': 'ga:uniqueEvents',
       'dimensions': 'ga:country,ga:eventCategory',
@@ -204,7 +234,7 @@ function getEventsData (request, reply) {
               break;
           }
 
-          Country.findOneAndUpdate({name: collection.name}, collection, {upsert: true}, function (err) {
+          Week.findOneAndUpdate({name: collection.name}, collection, {upsert: true}, function (err) {
             if (err) {
               console.log(err);
               return done(err);
@@ -224,6 +254,8 @@ function getEventsData (request, reply) {
 }
 
 function getMostPopularCollection (request, reply) {
+  var currentWeek = getDates();
+
   authClient.authorize(function (err) {
     if (err) {
       console.log('AUTH ERROR: ', err);
@@ -232,9 +264,9 @@ function getMostPopularCollection (request, reply) {
 
     analytics.data.ga.get({
       auth: authClient,
-      'ids': COLLECTIONS_VIEW_ID,
-      'start-date': START_DATE,
-      'end-date': END_DATE,
+      'ids': ALL_DATA_VIEW_ID,
+      'start-date': currentWeek.startDate,
+      'end-date': currentWeek.endDate,
       'metrics': 'ga:users',
       'dimensions': 'ga:country,ga:pagePath',
     }, function (err, result) {
@@ -271,7 +303,7 @@ function getMostPopularCollection (request, reply) {
             collection3: (matrix[country][2] ? matrix[country][2] : {}).collection,
           };
 
-          Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
+          Week.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
             if (err) {
               console.log(err);
               return done(err);
@@ -296,7 +328,7 @@ module.exports = function (_server) {
   [
     {
       method: 'GET',
-      path: '/ga/countries',
+      path: '/ga/weeks',
       config: {
         handler: getBasicData,
         auth: 'session'
@@ -304,7 +336,7 @@ module.exports = function (_server) {
     },
     {
       method: 'GET',
-      path: '/ga/countries_shares',
+      path: '/ga/weeks_shares',
       config: {
         handler: getSharesData,
         auth: 'session'
@@ -312,7 +344,7 @@ module.exports = function (_server) {
     },
     {
       method: 'GET',
-      path: '/ga/countries_events',
+      path: '/ga/weeks_events',
       config: {
         handler: getEventsData,
         auth: 'session'
@@ -320,7 +352,7 @@ module.exports = function (_server) {
     },
     {
       method: 'GET',
-      path: '/ga/countries_popular',
+      path: '/ga/weeks_popular',
       config: {
         handler: getMostPopularCollection,
         auth: 'session'
