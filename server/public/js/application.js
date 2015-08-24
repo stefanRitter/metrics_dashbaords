@@ -26934,6 +26934,7 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
     .when('/collections', {templateUrl: '/assets/html/feed/collections'})
     .when('/countries',   {templateUrl: '/assets/html/feed/countries'})
     .when('/weeks',       {templateUrl: '/assets/html/feed/weeks'})
+    .when('/ga',          {templateUrl: '/assets/html/ga/index'})
 
     .otherwise({redirectTo: '/'});
 });
@@ -27109,5 +27110,22 @@ angular.module('app').controller('weeksController', ['$http', function ($http) {
     .success(function (result) {
       vm.weeks = result;
     });
+
+}]);
+
+angular.module('app').controller('gaController', ['$http', function ($http) {
+  'use strict';
+
+  var vm = this;
+
+  $http
+    .get('/weeks', {})
+    .error(function (err) {
+      console.log('error', err);
+    })
+    .success(function (result) {
+      vm.weeks = result;
+    });
+
 
 }]);

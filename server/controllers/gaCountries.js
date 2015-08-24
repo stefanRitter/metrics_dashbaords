@@ -314,7 +314,15 @@ module.exports = function (_server) {
       path: '/ga/countries',
       config: {
         handler: getBasicData,
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     },
     {
@@ -322,7 +330,15 @@ module.exports = function (_server) {
       path: '/ga/countries_shares',
       config: {
         handler: getSharesData,
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     },
     {
@@ -330,7 +346,15 @@ module.exports = function (_server) {
       path: '/ga/countries_events',
       config: {
         handler: getEventsData,
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     },
     {
@@ -338,7 +362,15 @@ module.exports = function (_server) {
       path: '/ga/countries_popular',
       config: {
         handler: getMostPopularCollection,
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     }
   ]

@@ -248,9 +248,17 @@ module.exports = function (_server) {
       path: '/ga',
       config: {
         handler: {
-          file: publicPath + '/html/ga/index.html'
+          file: publicPath + '/html/index.html'
         },
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     },
     {
@@ -258,7 +266,15 @@ module.exports = function (_server) {
       path: '/ga/collections',
       config: {
         handler: basicCollectionsData,
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     },
     {
@@ -266,7 +282,15 @@ module.exports = function (_server) {
       path: '/ga/collections_shares',
       config: {
         handler: getSharesData,
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     },
     {
@@ -274,7 +298,15 @@ module.exports = function (_server) {
       path: '/ga/collections_events',
       config: {
         handler: getEventsData,
-        auth: 'session'
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
       }
     }
   ]

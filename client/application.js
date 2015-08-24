@@ -20,6 +20,7 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
     .when('/collections', {templateUrl: '/assets/html/feed/collections'})
     .when('/countries',   {templateUrl: '/assets/html/feed/countries'})
     .when('/weeks',       {templateUrl: '/assets/html/feed/weeks'})
+    .when('/ga',          {templateUrl: '/assets/html/ga/index'})
 
     .otherwise({redirectTo: '/'});
 });

@@ -1,36 +1,29 @@
-doctype
-html(lang="en", itemtype="http://schema.org/WebPage" itemscope ng-app="app")
+.center(ng-controller="gaController as vm")
+  .inline-block.margin-top-big.left
+    ul
+      li
+        a(href="/ga/collections", target="_self") Collections: Basic
+      li
+        a(href="/ga/collections_shares", target="_self") Collections: Shares
+      li
+        a(href="/ga/collections_events", target="_self") Collections: Events
 
-  include ../common/_head
-  
-  body
-    div
-      .center
-        .inline-block.margin-top-big.left
-          ul
-            li
-              a(href="/ga/collections") Collections: Basic
-            li
-              a(href="/ga/collections_shares") Collections: Shares
-            li
-              a(href="/ga/collections_events") Collections: Events
+    ul.margin-top-big
+      li
+        a(href="/ga/countries", target="_self") Countries: Basic
+      li
+        a(href="/ga/countries_shares", target="_self") Countries: Shares
+      li
+        a(href="/ga/countries_events", target="_self") Countries: Events
+      li
+        a(href="/ga/countries_popular", target="_self") Countries: Popular
 
-          ul.margin-top-big
-            li
-              a(href="/ga/countries") Countries: Basic
-            li
-              a(href="/ga/countries_shares") Countries: Shares
-            li
-              a(href="/ga/countries_events") Countries: Events
-            li
-              a(href="/ga/countries_popular") Countries: Popular
-
-          ul.margin-top-big
-            li
-              a(href="/ga/weeks") Weeks: Basic
-            li
-              a(href="/ga/weeks_shares") Weeks: Shares
-            li
-              a(href="/ga/weeks_events") Weeks: Events
-            li
-              a(href="/ga/weeks_popular") Weeks: Popular
+    ul.margin-top-big
+      li
+        a(href="/ga/weeks", target="_self") Weeks: Basic
+      li
+        a(href="/ga/weeks_shares", target="_self") Weeks: Shares
+      li
+        a(href="/ga/weeks_events", target="_self") Weeks: Events
+      li
+        a(href="/ga/weeks_popular", target="_self") Weeks: Popular
