@@ -16,7 +16,7 @@ angular.module('app').controller('weeksController', ['$http', function ($http) {
   };
 
   vm.formatCollectionPath = function (path) {
-    return path.split('/')[5].replace(/-/g,' ');
+    return path ? path.split('/')[5].replace(/-/g,' ') : '';
   };
 
   $http
