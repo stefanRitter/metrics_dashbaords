@@ -1,32 +1,23 @@
 'use strict';
 
+var server = {};
+
 var Boom = require('boom'),
     Batch = require('batch'),
     Path = require('path'),
-    publicPath = Path.join(__dirname, '../public'),
-    pemPath = Path.join(__dirname, '../config');
-
-var server = {};
+    publicPath = Path.join(__dirname, '../public');
 
 var Collection = require('mongoose').model('Collection');
 
 var googleapis = require('googleapis'),
-    JWT = googleapis.auth.JWT,
     analytics = googleapis.analytics('v3');
 
-var SERVICE_ACCOUNT_EMAIL = '431222840368-vm8ghahfqkclispahsacsdv3l89se6ob@developer.gserviceaccount.com';
-var SERVICE_ACCOUNT_KEY_FILE = pemPath + '/key.pem';
+var gaSetup = require('../utils/gaSetup');
 
-var COLLECTIONS_VIEW_ID = 'ga:106745667';
-var START_DATE = '2015-08-24';
-var END_DATE = '2016-01-01';
-
-var authClient = new JWT(
-    SERVICE_ACCOUNT_EMAIL,
-    SERVICE_ACCOUNT_KEY_FILE,
-    null,
-    ['https://www.googleapis.com/auth/analytics.readonly']
-);
+var COLLECTIONS_VIEW_ID = gaSetup.COLLECTIONS_VIEW_ID;
+var START_DATE = gaSetup.START_DATE;
+var END_DATE = gaSetup.END_DATE;
+var authClient = gaSetup.authClient;
 
 
 function basicCollectionsData (request, reply) {

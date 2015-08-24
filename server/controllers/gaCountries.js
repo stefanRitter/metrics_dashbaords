@@ -1,31 +1,21 @@
 'use strict';
 
-var Boom = require('boom'),
-    Batch = require('batch'),
-    Path = require('path'),
-    pemPath = Path.join(__dirname, '../config');
-
 var server = {};
+
+var Boom = require('boom'),
+    Batch = require('batch');
 
 var Country = require('mongoose').model('Country');
 
 var googleapis = require('googleapis'),
-    JWT = googleapis.auth.JWT,
     analytics = googleapis.analytics('v3');
 
-var SERVICE_ACCOUNT_EMAIL = '431222840368-vm8ghahfqkclispahsacsdv3l89se6ob@developer.gserviceaccount.com';
-var SERVICE_ACCOUNT_KEY_FILE = pemPath + '/key.pem';
+var gaSetup = require('../utils/gaSetup');
 
-var COLLECTIONS_VIEW_ID = 'ga:106745667';
-var START_DATE = '2015-08-24';
-var END_DATE = '2016-01-01';
-
-var authClient = new JWT(
-    SERVICE_ACCOUNT_EMAIL,
-    SERVICE_ACCOUNT_KEY_FILE,
-    null,
-    ['https://www.googleapis.com/auth/analytics.readonly']
-);
+var COLLECTIONS_VIEW_ID = gaSetup.COLLECTIONS_VIEW_ID;
+var START_DATE = gaSetup.START_DATE;
+var END_DATE = gaSetup.END_DATE;
+var authClient = gaSetup.authClient;
 
 
 function getBasicData (request, reply) {

@@ -1,34 +1,23 @@
 'use strict';
 
-var Boom = require('boom'),
-    Path = require('path'),
-    pemPath = Path.join(__dirname, '../config');
-
 var server = {};
+
+var Boom = require('boom');
 
 var Week = require('mongoose').model('Week');
 
 var googleapis = require('googleapis'),
-    JWT = googleapis.auth.JWT,
     analytics = googleapis.analytics('v3');
 
-var SERVICE_ACCOUNT_EMAIL = '431222840368-vm8ghahfqkclispahsacsdv3l89se6ob@developer.gserviceaccount.com';
-var SERVICE_ACCOUNT_KEY_FILE = pemPath + '/key.pem';
+var gaSetup = require('../utils/gaSetup');
 
-var ALL_DATA_VIEW_ID = 'ga:106585530';
-
-var authClient = new JWT(
-    SERVICE_ACCOUNT_EMAIL,
-    SERVICE_ACCOUNT_KEY_FILE,
-    null,
-    ['https://www.googleapis.com/auth/analytics.readonly']
-);
-
+var ALL_DATA_VIEW_ID = gaSetup.ALL_DATA_VIEW_ID;
+var authClient = gaSetup.authClient;
 
 
 function getDates () {
-  var today  = new Date(),
-      target = new Date();
+  var today  = new Date('August 19, 2015 03:24:00'),
+      target = new Date('August 19, 2015 03:24:00');
 
   // ISO week date weeks start on monday
   // so correct the day number
