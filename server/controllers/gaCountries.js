@@ -52,7 +52,7 @@ function getBasicData (request, reply) {
             views: row[1],
             users: row[2],
             avgTime: row[3],
-            bounceRate: row[4]
+            bounceRate: Math.round(row[4])
           };
 
           Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {

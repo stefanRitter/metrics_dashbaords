@@ -55,7 +55,7 @@ function basicCollectionsData (request, reply) {
             views: row[1],
             users: row[2],
             avgTime: row[3],
-            bounceRate: row[4]
+            bounceRate: Math.round(row[4])
           };
 
           Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err) {

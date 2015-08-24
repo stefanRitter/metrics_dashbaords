@@ -12,6 +12,7 @@ var googleapis = require('googleapis'),
 var gaSetup = require('../utils/gaSetup');
 
 var ALL_DATA_VIEW_ID = gaSetup.ALL_DATA_VIEW_ID;
+var COLLECTIONS_VIEW_ID = gaSetup.COLLECTIONS_VIEW_ID;
 var authClient = gaSetup.authClient;
 
 
@@ -24,7 +25,7 @@ function getDates () {
   var dayNr = (today.getDay() + 6) % 7;
 
   var monday = new Date(today.setDate(today.getDate() - dayNr));
-  var sunday = new Date(today.setDate(today.getDate() - dayNr + 6));
+  var sunday = new Date(today.setDate(today.getDate() - dayNr + 8));
 
   // Set the target to the thursday of this week so the
   // target date is in the right year
@@ -85,7 +86,7 @@ function getBasicData (request, reply) {
       currentWeek.views = weekData[0];
       currentWeek.users = weekData[1];
       currentWeek.avgTime = weekData[2];
-      currentWeek.bounceRate = weekData[3];
+      currentWeek.bounceRate = Math.round(weekData[3]);
 
       Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
         if (err) {
@@ -132,19 +133,19 @@ function getSharesData (request, reply) {
         return reply('No share actions this week...');
       }
 
-      var weekData = result.rows[0];
-
-      switch (weekData[0]) {
-        case 'tweet':
-          currentWeek.twitterShares = weekData[1];
-          break;
-        case 'share':
-          currentWeek.facebookShares = weekData[1];
-          break;
-        case 'shareline':
-          currentWeek.sharelineShares = weekData[1];
-          break;
-      }
+      result.rows.forEach(function (row) {
+        switch (row[0]) {
+          case 'tweet':
+            currentWeek.twitterShares = row[1];
+            break;
+          case 'share':
+            currentWeek.facebookShares = row[1];
+            break;
+          case 'shareline':
+            currentWeek.sharelineShares = row[1];
+            break;
+        }
+      });
 
       Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
         if (err) {
@@ -237,7 +238,7 @@ function getMostPopularCollection (request, reply) {
 
     analytics.data.ga.get({
       auth: authClient,
-      'ids': ALL_DATA_VIEW_ID,
+      'ids': COLLECTIONS_VIEW_ID,
       'start-date': currentWeek.startDate,
       'end-date': currentWeek.endDate,
       'metrics': 'ga:users',
