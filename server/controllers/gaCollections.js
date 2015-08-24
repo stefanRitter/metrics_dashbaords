@@ -110,6 +110,10 @@ function getSharesData (request, reply) {
         return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
       }
 
+      if (result.totalResults === 0) {
+        return reply('No shares this week...');
+      }
+
       var batch = new Batch();
 
       result.rows.forEach(function (row) {
@@ -176,6 +180,10 @@ function getEventsData (request, reply) {
       console.log('total events:', result.totalResults);
       if (result.totalResults > 10000) {
         return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
+      }
+
+      if (result.totalResults === 0) {
+        return reply('No events this week...');
       }
 
       var batch = new Batch();

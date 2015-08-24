@@ -123,7 +123,7 @@ function getSharesData (request, reply) {
       'end-date': currentWeek.endDate,
       'max-results': 10000,
       'metrics': 'ga:socialInteractions',
-      'dimensions': 'ga:country,ga:socialInteractionAction',
+      'dimensions': 'ga:socialInteractionAction',
     }, function (err, result) {
 
       if (err) {
@@ -136,39 +136,29 @@ function getSharesData (request, reply) {
         return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
       }
 
-      var batch = new Batch();
+      if (result.totalResults === 0) {
+        return reply('No share actions this week...');
+      }
 
-      result.rows.forEach(function (row) {
-        batch.push(function (done) {
-          var model =  {
-            name: row[0]
-          };
+      var weekData = result.rows[0];
 
-          switch (row[1]) {
-            case 'tweet':
-              model.twitterShares = row[2];
-              break;
-            case 'share':
-              model.facebookShares = row[2];
-              break;
-            case 'shareline':
-              model.sharelineShares = row[2];
-              break;
-          }
+      switch (weekData[0]) {
+        case 'tweet':
+          currentWeek.twitterShares = weekData[1];
+          break;
+        case 'share':
+          currentWeek.facebookShares = weekData[1];
+          break;
+        case 'shareline':
+          currentWeek.sharelineShares = weekData[1];
+          break;
+      }
 
-          Week.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
-            if (err) {
-              console.log(err);
-              return done(err);
-            }
-            done();
-          });
-        });
-      });
-
-      batch.on('progress', function () {});
-
-      batch.end(function () {
+      Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
+        if (err) {
+          console.error(err);
+          return reply(Boom.badImplementation(err));
+        }
         reply(result.rows.length + ' share events registered.');
       });
     });
@@ -192,8 +182,9 @@ function getEventsData (request, reply) {
       'end-date': currentWeek.endDate,
       'max-results': 10000,
       'metrics': 'ga:uniqueEvents',
-      'dimensions': 'ga:country,ga:eventCategory',
+      'dimensions': 'ga:eventCategory',
     }, function (err, result) {
+      /* jshint maxcomplexity: false */
 
       if (err) {
         console.error('DATA ERROR', err);
@@ -205,48 +196,38 @@ function getEventsData (request, reply) {
         return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
       }
 
-      var batch = new Batch();
+      if (result.totalResults === 0) {
+        return reply('No events this week...');
+      }
 
-      result.rows.forEach(function (row) {
-        batch.push(function (done) {
-          var collection =  {
-            name: row[0]
-          };
+      var weekData = result.rows[0];
 
-          switch (row[1]) {
-            case 'show more':
-              collection.showMoreClicks = row[2];
-              break;
-            case 'external link':
-              collection.externalClicks = row[2];
-              break;
-            case 'other navigation':
-              collection.otherNavigationClicks = row[2];
-              break;
-            case 'comment':
-              collection.comments = row[2];
-              break;
-            case 'upvote':
-              collection.upvotes = row[2];
-              break;
-            case 'bookmark':
-              collection.bookmarks = row[2];
-              break;
-          }
+      switch (weekData[0]) {
+        case 'show more':
+          currentWeek.showMoreClicks = weekData[1];
+          break;
+        case 'external link':
+          currentWeek.externalClicks = weekData[1];
+          break;
+        case 'other navigation':
+          currentWeek.otherNavigationClicks = weekData[1];
+          break;
+        case 'comment':
+          currentWeek.comments = weekData[1];
+          break;
+        case 'upvote':
+          currentWeek.upvotes = weekData[1];
+          break;
+        case 'bookmark':
+          currentWeek.bookmarks = weekData[1];
+          break;
+      }
 
-          Week.findOneAndUpdate({name: collection.name}, collection, {upsert: true}, function (err) {
-            if (err) {
-              console.log(err);
-              return done(err);
-            }
-            done();
-          });
-        });
-      });
-
-      batch.on('progress', function () {});
-
-      batch.end(function () {
+      Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
+        if (err) {
+          console.error(err);
+          return reply(Boom.badImplementation(err));
+        }
         reply(result.rows.length + ' events registered.');
       });
     });

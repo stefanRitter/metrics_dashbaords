@@ -108,6 +108,10 @@ function getSharesData (request, reply) {
         return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
       }
 
+      if (result.totalResults === 0) {
+        return reply('No shares this week...');
+      }
+
       var batch = new Batch();
 
       result.rows.forEach(function (row) {
@@ -168,6 +172,10 @@ function getEventsData (request, reply) {
       if (err) {
         console.error('DATA ERROR', err);
         return reply(Boom.badImplementation(err));
+      }
+
+      if (result.totalResults === 0) {
+        return reply('No events this week...');
       }
 
       console.log('total events:', result.totalResults);
@@ -243,7 +251,6 @@ function getMostPopularCollection (request, reply) {
         console.error('DATA ERROR', err);
         return reply(Boom.badImplementation(err));
       }
-
 
       var matrix = {};
       result.rows.forEach(function (row) {
