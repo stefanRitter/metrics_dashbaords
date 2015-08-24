@@ -27123,8 +27123,8 @@ angular.module('app').controller('gaController', ['$http', function ($http) {
     $http
       .get(url, {})
       .error(function (err) {
-        window.alert('error');
         console.log('error', err);
+        vm.message = err.message;
       })
       .success(function (result) {
         vm.message = result;

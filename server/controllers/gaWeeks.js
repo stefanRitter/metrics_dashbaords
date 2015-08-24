@@ -193,28 +193,28 @@ function getEventsData (request, reply) {
         return reply('No events this week...');
       }
 
-      var weekData = result.rows[0];
-
-      switch (weekData[0]) {
-        case 'show more':
-          currentWeek.showMoreClicks = weekData[1];
-          break;
-        case 'external link':
-          currentWeek.externalClicks = weekData[1];
-          break;
-        case 'other navigation':
-          currentWeek.otherNavigationClicks = weekData[1];
-          break;
-        case 'comment':
-          currentWeek.comments = weekData[1];
-          break;
-        case 'upvote':
-          currentWeek.upvotes = weekData[1];
-          break;
-        case 'bookmark':
-          currentWeek.bookmarks = weekData[1];
-          break;
-      }
+      result.rows.forEach(function (row) {
+        switch (row[0]) {
+          case 'show more':
+            currentWeek.showMoreClicks = row[1];
+            break;
+          case 'external link':
+            currentWeek.externalClicks = row[1];
+            break;
+          case 'other navigation':
+            currentWeek.otherNavigationClicks = row[1];
+            break;
+          case 'comment':
+            currentWeek.comments = row[1];
+            break;
+          case 'upvote':
+            currentWeek.upvotes = row[1];
+            break;
+          case 'bookmark':
+            currentWeek.bookmarks = row[1];
+            break;
+        }
+      });
 
       Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
         if (err) {
