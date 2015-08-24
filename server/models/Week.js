@@ -35,7 +35,11 @@ schema = mongoose.Schema({
 
   twitterShares: {type: Number, default: 0},
   facebookShares: {type: Number, default: 0},
-  sharelineShares: {type: Number, default: 0}
+  sharelineShares: {type: Number, default: 0},
+
+  collection1: {type: String, default: ''},
+  collection2: {type: String, default: ''},
+  collection3: {type: String, default: ''}
 });
 
 module.exports = mongoose.model('Week', schema);

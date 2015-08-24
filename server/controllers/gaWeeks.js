@@ -1,7 +1,6 @@
 'use strict';
 
 var Boom = require('boom'),
-    Batch = require('batch'),
     Path = require('path'),
     pemPath = Path.join(__dirname, '../config');
 
@@ -86,6 +85,10 @@ function getBasicData (request, reply) {
       if (err) {
         console.error('DATA ERROR', err);
         return reply(Boom.badImplementation(err));
+      }
+
+      if (result.totalResults === 0) {
+        return reply('No data this week...');
       }
 
       var weekData = result.rows[0];
@@ -249,7 +252,7 @@ function getMostPopularCollection (request, reply) {
       'start-date': currentWeek.startDate,
       'end-date': currentWeek.endDate,
       'metrics': 'ga:users',
-      'dimensions': 'ga:country,ga:pagePath',
+      'dimensions': 'ga:pagePath',
     }, function (err, result) {
 
       if (err) {
@@ -257,47 +260,24 @@ function getMostPopularCollection (request, reply) {
         return reply(Boom.badImplementation(err));
       }
 
+      if (result.totalResults === 0) {
+        return reply('No collections this week...');
+      }
 
-      var matrix = {};
-      result.rows.forEach(function (row) {
-        if (!matrix[row[0]]) { matrix[row[0]] = []; }
-
-        matrix[row[0]].push({
-          users: row[2],
-          collection: row[1]
-        });
+      var sorted = result.rows.sort(function (a, b) {
+        return b[1] - a[1];
       });
 
-      var batch = new Batch();
+      currentWeek.collection1 = sorted[0][0];
+      currentWeek.collection2 = sorted[1] ? sorted[1][0] : '';
+      currentWeek.collection3 = sorted[2] ? sorted[2][0] : '';
 
-      Object.keys(matrix).forEach(function (country) {
-        // sort by most popular
-        matrix[country].sort(function (a, b) {
-          return b.users - a.users;
-        });
-
-        batch.push(function (done) {
-          var model =  {
-            name: country,
-            collection1: matrix[country][0].collection,
-            collection2: (matrix[country][1] ? matrix[country][1] : {}).collection,
-            collection3: (matrix[country][2] ? matrix[country][2] : {}).collection,
-          };
-
-          Week.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
-            if (err) {
-              console.log(err);
-              return done(err);
-            }
-            done();
-          });
-        });
-      });
-
-      batch.on('progress', function () {});
-
-      batch.end(function () {
-        reply(result.rows.length + ' collections by country processed.');
+      Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
+        if (err) {
+          console.error(err);
+          return reply(Boom.badImplementation(err));
+        }
+        reply(result.rows.length + ' collections processed.');
       });
     });
   });

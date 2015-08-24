@@ -50,6 +50,10 @@ function basicCollectionsData (request, reply) {
         return reply(Boom.badImplementation(err));
       }
 
+      if (result.totalResults === 0) {
+        return reply('No collections this week...');
+      }
+
       var batch = new Batch();
 
       result.rows.forEach(function (row) {

@@ -49,6 +49,10 @@ function getBasicData (request, reply) {
         return reply(Boom.badImplementation(err));
       }
 
+      if (result.totalResults === 0) {
+        return reply('No countries this week...');
+      }
+
       var batch = new Batch();
 
       result.rows.forEach(function (row) {
@@ -250,6 +254,10 @@ function getMostPopularCollection (request, reply) {
       if (err) {
         console.error('DATA ERROR', err);
         return reply(Boom.badImplementation(err));
+      }
+
+      if (result.totalResults === 0) {
+        return reply('No collections this week...');
       }
 
       var matrix = {};
