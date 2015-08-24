@@ -12,7 +12,13 @@ div(ng-controller="weeksController as vm")
       th(ng-click="vm.changeFilter('calendarWeek')", ng-class="{'active': vm.orderFilter=='calendarWeek', 'up': vm.orderFilterDirection}") Week#
       th(ng-click="vm.changeFilter('startDate')", ng-class="{'active': vm.orderFilter=='startDate', 'up': vm.orderFilterDirection}") Monday
       th(ng-click="vm.changeFilter('views')", ng-class="{'active': vm.orderFilter=='views', 'up': vm.orderFilterDirection}") Views
-      th(ng-click="vm.changeFilter('users')", ng-class="{'active': vm.orderFilter=='users', 'up': vm.orderFilterDirection}") Users
+      th(ng-click="vm.changeFilter('users')", ng-class="{'active': vm.orderFilter=='users', 'up': vm.orderFilterDirection}") Total Users
+      th(ng-click="vm.changeFilter('newUsers')", ng-class="{'active': vm.orderFilter=='newUsers', 'up': vm.orderFilterDirection}") New users
+      th(ng-click="vm.changeFilter('returningUsers')", ng-class="{'active': vm.orderFilter=='returningUsers', 'up': vm.orderFilterDirection}") Returning users
+      th(ng-click="vm.changeFilter('loggedinUsers')", ng-class="{'active': vm.orderFilter=='loggedinUsers', 'up': vm.orderFilterDirection}") Loggedin users
+      th(ng-click="vm.changeFilter('loggedoutUsers')", ng-class="{'active': vm.orderFilter=='loggedoutUsers', 'up': vm.orderFilterDirection}") Loggedout users
+      th(ng-click="vm.changeFilter('sessions')", ng-class="{'active': vm.orderFilter=='sessions', 'up': vm.orderFilterDirection}") Sessions
+      th(ng-click="vm.changeFilter('pageviewsPerSession')", ng-class="{'active': vm.orderFilter=='pageviewsPerSession', 'up': vm.orderFilterDirection}") Views per session
       th(ng-click="vm.changeFilter('avgTime')", ng-class="{'active': vm.orderFilter=='avgTime', 'up': vm.orderFilterDirection}") Avg. time
       th(ng-click="vm.changeFilter('bounceRate')", ng-class="{'active': vm.orderFilter=='bounceRate', 'up': vm.orderFilterDirection}") Bounce rate
       th(ng-click="vm.changeFilter('collection1')", ng-class="{'active': vm.orderFilter=='collection1', 'up': vm.orderFilterDirection}") Most read collection
@@ -33,6 +39,12 @@ div(ng-controller="weeksController as vm")
       td {{week.startDate}}
       td {{week.views}}
       td {{week.users}}
+      td {{week.newUsers}}
+      td {{week.returningUsers}}
+      td {{week.loggedinUsers}}
+      td {{week.loggedoutUsers}}
+      td {{week.sessions}}
+      td {{week.pageviewsPerSession}}
       td {{week.avgTime | duration}}
       td {{week.bounceRate}}%
       td {{vm.formatCollectionPath(week.collection1)}}

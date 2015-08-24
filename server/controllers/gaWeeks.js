@@ -13,6 +13,7 @@ var gaSetup = require('../utils/gaSetup');
 
 var ALL_DATA_VIEW_ID = gaSetup.ALL_DATA_VIEW_ID;
 var COLLECTIONS_VIEW_ID = gaSetup.COLLECTIONS_VIEW_ID;
+var LOGGEDIN_VIEW_ID = gaSetup.LOGGEDIN_VIEW_ID;
 var authClient = gaSetup.authClient;
 
 
@@ -69,7 +70,7 @@ function getBasicData (request, reply) {
       'ids': ALL_DATA_VIEW_ID,
       'start-date': currentWeek.startDate,
       'end-date': currentWeek.endDate,
-      'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage,ga:bounceRate'
+      'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage,ga:bounceRate,ga:newUsers,ga:pageviewsPerSession,ga:sessions'
     }, function (err, result) {
 
       if (err) {
@@ -81,12 +82,16 @@ function getBasicData (request, reply) {
         return reply('No data this week...');
       }
 
-      var weekData = result.rows[0];
+      var row = result.rows[0];
 
-      currentWeek.views = weekData[0];
-      currentWeek.users = weekData[1];
-      currentWeek.avgTime = weekData[2];
-      currentWeek.bounceRate = Math.round(weekData[3]);
+      currentWeek.views = row[0];
+      currentWeek.users = row[1];
+      currentWeek.avgTime = row[2];
+      currentWeek.bounceRate = Math.round(row[3]);
+      currentWeek.newUsers = row[4];
+      currentWeek.pageviewsPerSession = row[5];
+      currentWeek.sessions = row[6];
+      currentWeek.returningUsers = currentWeek.users - currentWeek.newUsers;
 
       Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
         if (err) {
@@ -273,6 +278,54 @@ function getMostPopularCollection (request, reply) {
   });
 }
 
+function getLoggedInData (request, reply) {
+  var currentWeek = getDates();
+
+  authClient.authorize(function (err) {
+    if (err) {
+      console.log('AUTH ERROR: ', err);
+      return reply(Boom.badImplementation(err));
+    }
+
+    analytics.data.ga.get({
+      auth: authClient,
+      'ids': LOGGEDIN_VIEW_ID,
+      'start-date': currentWeek.startDate,
+      'end-date': currentWeek.endDate,
+      'metrics': 'ga:users',
+    }, function (err, result) {
+
+      if (err) {
+        console.error('DATA ERROR', err);
+        return reply(Boom.badImplementation(err));
+      }
+
+      if (result.totalResults === 0) {
+        return reply('No data this week...');
+      }
+
+      currentWeek.loggedinUsers = result.rows[0][0];
+
+      Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err, doc) {
+        if (err) {
+          console.error(err);
+          return reply(Boom.badImplementation(err));
+        }
+
+        doc.loggedoutUsers = doc.users - doc.loggedinUsers;
+        doc.save(function (err) {
+          if (err) {
+            console.error(err);
+            return reply(Boom.badImplementation(err));
+          }
+          reply(result.rows[0][0] + ' users logged in.');
+        });
+      });
+    });
+  });
+}
+
+
 module.exports = function (_server) {
   server = _server;
 
@@ -330,6 +383,22 @@ module.exports = function (_server) {
       path: '/ga/weeks_popular',
       config: {
         handler: getMostPopularCollection,
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
+      }
+    },
+    {
+      method: 'GET',
+      path: '/ga/weeks_login',
+      config: {
+        handler: getLoggedInData,
         auth: {
           mode: 'try',
           strategy: 'session'

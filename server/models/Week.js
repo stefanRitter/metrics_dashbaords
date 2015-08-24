@@ -22,9 +22,15 @@ schema = mongoose.Schema({
   },
 
   views: {type: Number, default: 0},
-  users: {type: Number, default: 0},
   avgTime: {type: Number, default: 0},
   bounceRate: {type: Number, default: 0},
+  users: {type: Number, default: 0},
+  newUsers: {type: Number, default: 0},
+  returningUsers: {type: Number, default: 0},
+  loggedinUsers: {type: Number, default: 0},
+  loggedoutUsers: {type: Number, default: 0},
+  pageviewsPerSession: {type: Number, default: 0},
+  sessions: {type: Number, default: 0},
 
   showMoreClicks: {type: Number, default: 0},
   externalClicks: {type: Number, default: 0},
@@ -32,6 +38,7 @@ schema = mongoose.Schema({
   comments: {type: Number, default: 0},
   upvotes: {type: Number, default: 0},
   bookmarks: {type: Number, default: 0},
+  newEmails: {type: Number, default: 0},
 
   twitterShares: {type: Number, default: 0},
   facebookShares: {type: Number, default: 0},
