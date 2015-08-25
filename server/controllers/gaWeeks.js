@@ -218,6 +218,9 @@ function getEventsData (request, reply) {
           case 'bookmark':
             currentWeek.bookmarks = row[1];
             break;
+          case 'email':
+            currentWeek.newEmails = row[1];
+            break;
         }
       });
 

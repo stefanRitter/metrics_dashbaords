@@ -21,6 +21,7 @@ div(ng-controller="weeksController as vm")
       th(ng-click="vm.changeFilter('pageviewsPerSession')", ng-class="{'active': vm.orderFilter=='pageviewsPerSession', 'up': vm.orderFilterDirection}") Views per session
       th(ng-click="vm.changeFilter('avgTime')", ng-class="{'active': vm.orderFilter=='avgTime', 'up': vm.orderFilterDirection}") Avg. time
       th(ng-click="vm.changeFilter('bounceRate')", ng-class="{'active': vm.orderFilter=='bounceRate', 'up': vm.orderFilterDirection}") Bounce rate
+      th(ng-click="vm.changeFilter('newEmails')", ng-class="{'active': vm.orderFilter=='newEmails', 'up': vm.orderFilterDirection}") New emails captured
       th(ng-click="vm.changeFilter('collection1')", ng-class="{'active': vm.orderFilter=='collection1', 'up': vm.orderFilterDirection}") Most read collection
       th(ng-click="vm.changeFilter('collection2')", ng-class="{'active': vm.orderFilter=='collection2', 'up': vm.orderFilterDirection}") 2. most read
       th(ng-click="vm.changeFilter('collection3')", ng-class="{'active': vm.orderFilter=='collection3', 'up': vm.orderFilterDirection}") 3. most read
@@ -47,6 +48,7 @@ div(ng-controller="weeksController as vm")
       td {{week.pageviewsPerSession}}
       td {{week.avgTime | duration}}
       td {{week.bounceRate}}%
+      td {{week.newEmails}}
       td
         a(href="//beta.iht.com{{week.collection1}}", target="_blank") {{vm.formatCollectionPath(week.collection1)}}
       td
