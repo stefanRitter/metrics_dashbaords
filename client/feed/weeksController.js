@@ -20,7 +20,9 @@ angular.module('app').controller('weeksController', ['$http', function ($http) {
   };
 
   vm.calcBgd = function (field, index) {
-    if (index === 0) { return 'background: transparent;'; }
+    if (index === 0 || vm.orderFilter !== 'calendarWeek' || vm.orderFilterDirection === true) {
+      return 'background: transparent;';
+    }
 
     var currentValue = vm.weeks[index][field],
         previousValue = vm.weeks[index-1][field];
