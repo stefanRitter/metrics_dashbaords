@@ -2,7 +2,7 @@ angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope'
   'use strict';
 
   var currentUser,
-      previousPath;
+      previousPath = '/collections';
 
   function login (user) {
     currentUser = user;
