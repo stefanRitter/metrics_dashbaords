@@ -27115,6 +27115,12 @@ angular.module('app').controller('weeksController', ['$http', function ($http) {
     var currentValue = vm.weeks[index][field],
         previousValue = vm.weeks[index-1][field];
 
+    if (field === 'bounceRate') {
+      var temp = currentValue;
+      currentValue = previousValue;
+      previousValue = temp;
+    }
+
     if (currentValue > previousValue) {
       return 'background: rgba(71, 146, 71, 0.53);';
     }
