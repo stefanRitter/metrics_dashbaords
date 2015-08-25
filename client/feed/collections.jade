@@ -27,7 +27,8 @@ div(ng-controller="collectionsController as vm")
       th(ng-click="vm.changeFilter('sharelineShares')", ng-class="{'active': vm.orderFilter=='sharelineShares', 'up': vm.orderFilterDirection}") Share lines
   
     tr(ng-repeat="collection in (vm.collections | orderBy: vm.orderFilter:vm.orderFilterDirection)")
-      td {{collection.title}}
+      td
+        a(href="//beta.iht.com{{collection.url}}", target="_blank") {{collection.title}}
       td {{collection.views}}
       td {{collection.users}}
       td {{collection.avgTime | duration}}

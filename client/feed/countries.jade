@@ -33,9 +33,12 @@ div(ng-controller="countriesController as vm")
       td {{country.users}}
       td {{country.avgTime | duration}}
       td {{country.bounceRate}}%
-      td {{vm.formatCollectionPath(country.collection1)}}
-      td {{vm.formatCollectionPath(country.collection2)}}
-      td {{vm.formatCollectionPath(country.collection3)}}
+      td
+        a(href="//beta.iht.com{{country.collection1}}", target="_blank") {{vm.formatCollectionPath(country.collection1)}}
+      td
+        a(href="//beta.iht.com{{country.collection2}}", target="_blank") {{vm.formatCollectionPath(country.collection2)}}
+      td
+        a(href="//beta.iht.com{{country.collection3}}", target="_blank") {{vm.formatCollectionPath(country.collection3)}}
       td {{country.showMoreClicks}}
       td {{country.externalClicks}}
       td {{country.otherNavigationClicks}}

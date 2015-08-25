@@ -36,7 +36,7 @@ div(ng-controller="weeksController as vm")
     
     tr(ng-repeat="week in (vm.weeks | orderBy: vm.orderFilter:vm.orderFilterDirection)")
       td {{week.calendarWeek}}
-      td {{week.startDate}}
+      td(style="min-width:82px;") {{week.startDate}}
       td {{week.views}}
       td {{week.users}}
       td {{week.newUsers}}
@@ -47,9 +47,12 @@ div(ng-controller="weeksController as vm")
       td {{week.pageviewsPerSession}}
       td {{week.avgTime | duration}}
       td {{week.bounceRate}}%
-      td {{vm.formatCollectionPath(week.collection1)}}
-      td {{vm.formatCollectionPath(week.collection2)}}
-      td {{vm.formatCollectionPath(week.collection3)}}
+      td
+        a(href="//beta.iht.com{{week.collection1}}", target="_blank") {{vm.formatCollectionPath(week.collection1)}}
+      td
+        a(href="//beta.iht.com{{week.collection2}}", target="_blank") {{vm.formatCollectionPath(week.collection2)}}
+      td
+        a(href="//beta.iht.com{{week.collection3}}", target="_blank") {{vm.formatCollectionPath(week.collection3)}}
       td {{week.showMoreClicks}}
       td {{week.externalClicks}}
       td {{week.otherNavigationClicks}}
