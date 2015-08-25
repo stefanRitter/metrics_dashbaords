@@ -9,7 +9,7 @@ div(ng-controller="weeksController as vm")
 
   table.margin-top-big
     tr
-      th(ng-click="vm.changeFilter('calendarWeek')", ng-class="{'active': vm.orderFilter=='calendarWeek', 'up': vm.orderFilterDirection}") Week#
+      th(ng-click="vm.changeFilter('calendarWeek')", ng-class="{'active': vm.orderFilter=='calendarWeek', 'up': vm.orderFilterDirection}") Week
       th(ng-click="vm.changeFilter('startDate')", ng-class="{'active': vm.orderFilter=='startDate', 'up': vm.orderFilterDirection}") Monday
       th(ng-click="vm.changeFilter('views')", ng-class="{'active': vm.orderFilter=='views', 'up': vm.orderFilterDirection}") Views
       th(ng-click="vm.changeFilter('users')", ng-class="{'active': vm.orderFilter=='users', 'up': vm.orderFilterDirection}") Total Users
@@ -38,29 +38,29 @@ div(ng-controller="weeksController as vm")
     tr(ng-repeat="week in (vm.weeks | orderBy: vm.orderFilter:vm.orderFilterDirection)")
       td {{week.calendarWeek}}
       td(style="min-width:82px;") {{week.startDate}}
-      td {{week.views}}
-      td {{week.users}}
-      td {{week.newUsers}}
-      td {{week.returningUsers}}
-      td {{week.loggedinUsers}}
-      td {{week.loggedoutUsers}}
-      td {{week.sessions}}
-      td {{week.pageviewsPerSession}}
-      td {{week.avgTime | duration}}
-      td {{week.bounceRate}}%
-      td {{week.newEmails}}
+      td(style="{{vm.calcBgd('views', $index)}}") {{week.views}}
+      td(style="{{vm.calcBgd('users', $index)}}") {{week.users}}
+      td(style="{{vm.calcBgd('newUsers', $index)}}") {{week.newUsers}}
+      td(style="{{vm.calcBgd('returningUsers', $index)}}") {{week.returningUsers}}
+      td(style="{{vm.calcBgd('loggedinUsers', $index)}}") {{week.loggedinUsers}}
+      td(style="{{vm.calcBgd('loggedoutUsers', $index)}}") {{week.loggedoutUsers}}
+      td(style="{{vm.calcBgd('sessions', $index)}}") {{week.sessions}}
+      td(style="{{vm.calcBgd('pageviewsPerSession', $index)}}") {{week.pageviewsPerSession.toFixed(2)}}
+      td(style="{{vm.calcBgd('avgTime', $index)}}") {{week.avgTime | duration}}
+      td(style="{{vm.calcBgd('bounceRate', $index)}}") {{week.bounceRate}}%
+      td(style="{{vm.calcBgd('newEmails', $index)}}") {{week.newEmails}}
       td
         a(href="//beta.iht.com{{week.collection1}}", target="_blank") {{vm.formatCollectionPath(week.collection1)}}
       td
         a(href="//beta.iht.com{{week.collection2}}", target="_blank") {{vm.formatCollectionPath(week.collection2)}}
       td
         a(href="//beta.iht.com{{week.collection3}}", target="_blank") {{vm.formatCollectionPath(week.collection3)}}
-      td {{week.showMoreClicks}}
-      td {{week.externalClicks}}
-      td {{week.otherNavigationClicks}}
-      td {{week.comments}}
-      td {{week.upvotes}}
-      td {{week.bookmarks}}
-      td {{week.twitterShares}}
-      td {{week.facebookShares}}
-      td {{week.sharelineShares}}
+      td(style="{{vm.calcBgd('showMoreClicks', $index)}}") {{week.showMoreClicks}}
+      td(style="{{vm.calcBgd('externalClicks', $index)}}") {{week.externalClicks}}
+      td(style="{{vm.calcBgd('otherNavigationClicks', $index)}}") {{week.otherNavigationClicks}}
+      td(style="{{vm.calcBgd('comments', $index)}}") {{week.comments}}
+      td(style="{{vm.calcBgd('upvotes', $index)}}") {{week.upvotes}}
+      td(style="{{vm.calcBgd('bookmarks', $index)}}") {{week.bookmarks}}
+      td(style="{{vm.calcBgd('twitterShares', $index)}}") {{week.twitterShares}}
+      td(style="{{vm.calcBgd('facebookShares', $index)}}") {{week.facebookShares}}
+      td(style="{{vm.calcBgd('sharelineShares', $index)}}") {{week.sharelineShares}}

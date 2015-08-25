@@ -18,8 +18,8 @@ var authClient = gaSetup.authClient;
 
 
 function getDates () {
-  var today  = new Date('August 19, 2015 03:24:00'),
-      target = new Date('August 19, 2015 03:24:00');
+  var today  = new Date(),
+      target = new Date();
 
   // ISO week date weeks start on monday
   // so correct the day number
