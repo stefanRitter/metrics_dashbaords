@@ -15,7 +15,7 @@ angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope'
     .error(function () {
       console.log('user not authenticated');
       previousPath = $location.path();
-      if (previousPath === '/' || previousPath === '/login') {
+      if (previousPath === '' || previousPath === '/' || previousPath === '/login') {
         previousPath = '/collections';
       }
       $location.path('/login');
