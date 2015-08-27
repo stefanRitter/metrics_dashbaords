@@ -15,12 +15,13 @@ var updateCollections = require('./updateCompanies'),
 
 
 updateCollections(function () {
+  console.log('collections updated');
 
   udpateCountries(function () {
+    console.log('countries updated');
 
     updateWeeks(function () {
-
-      console.log('done');
+      console.log('weeks updated');
     });
   });
 });
