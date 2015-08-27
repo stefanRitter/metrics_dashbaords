@@ -7,9 +7,7 @@ function updateCollections (cb) {
   server['/ga/countries']({}, function () {
     server['/ga/countries_shares']({}, function () {
       server['/ga/countries_events']({}, function () {
-        server['/ga/countries_popular']({}, function (response) {
-          console.log(response);
-
+        server['/ga/countries_popular']({}, function () {
           if (cb) { cb(); }
           else { process.exit(); }
         });

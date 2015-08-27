@@ -6,11 +6,9 @@ function updateCollections (cb) {
 
   server['/ga/weeks']({}, function () {
     server['/ga/weeks_shares']({}, function () {
-      server['/ga/weeks_events']({}, function (response) {
-        server['/ga/weeks_popular']({}, function (response) {
-          server['/ga/weeks_login']({}, function (response) {
-            console.log(response);
-
+      server['/ga/weeks_events']({}, function () {
+        server['/ga/weeks_popular']({}, function () {
+          server['/ga/weeks_login']({}, function () {
             if (cb) { cb(); }
             else { process.exit(); }
           });
