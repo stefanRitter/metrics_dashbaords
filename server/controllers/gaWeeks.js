@@ -315,7 +315,7 @@ function getLoggedInData (request, reply) {
           return reply(Boom.badImplementation(err));
         }
 
-        doc.loggedoutUsers = doc.users - doc.loggedinUsers;
+        doc.loggedoutUsers = doc.users - currentWeek.loggedinUsers;
         doc.save(function (err) {
           if (err) {
             console.error(err);

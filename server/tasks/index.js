@@ -9,19 +9,21 @@ var config = require('../config/config')[process.env.NODE_ENV];
 require('../config/mongoose.js')(config);
 
 
-var updateCollections = require('./updateCompanies'),
-    udpateCountries   = require('./updateBoards'),
-    updateWeeks       = require('./metrics');
+var updateCollections = require('./updateCollections'),
+    updateCountries   = require('./updateCountries'),
+    updateWeeks       = require('./updateWeeks');
 
 
 updateCollections(function () {
   console.log('collections updated');
 
-  udpateCountries(function () {
+  updateCountries(function () {
     console.log('countries updated');
 
     updateWeeks(function () {
       console.log('weeks updated');
+
+      process.exit();
     });
   });
 });
