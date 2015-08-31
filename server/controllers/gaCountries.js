@@ -237,7 +237,7 @@ function getMostPopularCollection (request, reply) {
       'ids': COLLECTIONS_VIEW_ID,
       'start-date': START_DATE,
       'end-date': END_DATE,
-      'metrics': 'ga:users',
+      'metrics': 'ga:pageviews',
       'dimensions': 'ga:country,ga:pagePath',
     }, function (err, result) {
 

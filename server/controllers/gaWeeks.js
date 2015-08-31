@@ -249,7 +249,7 @@ function getMostPopularCollection (request, reply) {
       'ids': COLLECTIONS_VIEW_ID,
       'start-date': currentWeek.startDate,
       'end-date': currentWeek.endDate,
-      'metrics': 'ga:users',
+      'metrics': 'ga:pageviews',
       'dimensions': 'ga:pagePath',
     }, function (err, result) {
 
