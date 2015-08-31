@@ -1,6 +1,6 @@
 'use strict';
 
-function updateCollections (cb) {
+function updateCollections (cb, date) {
   var server = require('./taskServer.js');
   require('../controllers/gaWeeks.js')(server);
 
@@ -11,11 +11,11 @@ function updateCollections (cb) {
           server['/ga/weeks_login']({}, function () {
             if (cb) { cb(); }
             else { process.exit(); }
-          });
-        });
-      });
-    });
-  });
+          }, date);
+        }, date);
+      }, date);
+    }, date);
+  }, date);
 }
 
 
@@ -29,5 +29,5 @@ if (!module.parent) {
   // setup datastore
   require('../config/mongoose.js')(config);
 
-  updateCollections();
+  updateCollections(false, process.argv[2]);
 }

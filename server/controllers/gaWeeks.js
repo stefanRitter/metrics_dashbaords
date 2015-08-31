@@ -18,7 +18,7 @@ var authClient = gaSetup.authClient;
 
 
 function getDates (date) {
-  var today  = date || new Date();
+  var today  = !!date ? new Date(date) : new Date();
   var dayNr = (today.getDay() + 6) % 7;
   var monday = new Date(today.setDate(today.getDate() - dayNr));
   var sunday = new Date(today.setDate(today.getDate() - dayNr + 8));
