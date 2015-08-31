@@ -17,38 +17,23 @@ var LOGGEDIN_VIEW_ID = gaSetup.LOGGEDIN_VIEW_ID;
 var authClient = gaSetup.authClient;
 
 
-function getDates () {
-  var today  = new Date(),
-      target = new Date();
-
-  // ISO week date weeks start on monday
-  // so correct the day number
+function getDates (date) {
+  var today  = date || new Date();
   var dayNr = (today.getDay() + 6) % 7;
-
   var monday = new Date(today.setDate(today.getDate() - dayNr));
   var sunday = new Date(today.setDate(today.getDate() - dayNr + 8));
-
-  // Set the target to the thursday of this week so the
-  // target date is in the right year
-  target.setDate(today.getDate() - dayNr + 3);
-
-  // ISO 8601 states that week 1 is the week
-  // with january 4th in it
-  var jan4 = new Date(target.getFullYear(), 0, 4);
-
-  // Number of days between target date and january 4th
-  var dayDiff = (target - jan4) / 86400000;
-
-  // Calculate week number: Week 1 (january 4th) plus the
-  // number of weeks between target date and january 4th
-  var weekNr = Math.ceil(dayDiff / 7);
 
   function preZero (num) {
     return num <= 9 ? '0'+num : num;
   }
 
+  function getWeek () {
+    var onejan = new Date(today.getFullYear(), 0, 1);
+    return Math.ceil((((today - onejan) / 86400000) + onejan.getDay() + 1) / 7)-1;
+  }
+
   return {
-    calendarWeek: weekNr,
+    calendarWeek: getWeek(),
     year: today.getYear(),
     startDate: monday.getFullYear()+'-'+preZero(monday.getMonth()+1)+'-'+preZero(monday.getDate()),
     endDate: sunday.getFullYear()+'-'+preZero(sunday.getMonth()+1)+'-'+preZero(sunday.getDate())
@@ -56,8 +41,8 @@ function getDates () {
 }
 
 
-function getBasicData (request, reply) {
-  var currentWeek = getDates();
+function getBasicData (request, reply, date) {
+  var currentWeek = getDates(date);
 
   authClient.authorize(function (err) {
     if (err) {
@@ -105,8 +90,8 @@ function getBasicData (request, reply) {
 }
 
 
-function getSharesData (request, reply) {
-  var currentWeek = getDates();
+function getSharesData (request, reply, date) {
+  var currentWeek = getDates(date);
 
   authClient.authorize(function (err) {
     if (err) {
@@ -164,8 +149,8 @@ function getSharesData (request, reply) {
 }
 
 
-function getEventsData (request, reply) {
-  var currentWeek = getDates();
+function getEventsData (request, reply, date) {
+  var currentWeek = getDates(date);
 
   authClient.authorize(function (err) {
     if (err) {
@@ -235,8 +220,8 @@ function getEventsData (request, reply) {
   });
 }
 
-function getMostPopularCollection (request, reply) {
-  var currentWeek = getDates();
+function getMostPopularCollection (request, reply, date) {
+  var currentWeek = getDates(date);
 
   authClient.authorize(function (err) {
     if (err) {
@@ -281,8 +266,8 @@ function getMostPopularCollection (request, reply) {
   });
 }
 
-function getLoggedInData (request, reply) {
-  var currentWeek = getDates();
+function getLoggedInData (request, reply, date) {
+  var currentWeek = getDates(date);
 
   authClient.authorize(function (err) {
     if (err) {
