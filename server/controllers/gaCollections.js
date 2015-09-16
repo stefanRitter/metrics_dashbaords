@@ -20,6 +20,12 @@ var END_DATE = gaSetup.END_DATE;
 var authClient = gaSetup.authClient;
 
 
+function getTitle (path) {
+  var splitted = path.split('/');
+  return splitted[splitted.length-1].replace(/-/g,' ');
+}
+
+
 function basicCollectionsData (request, reply) {
   authClient.authorize(function (err) {
     if (err) {
@@ -51,7 +57,7 @@ function basicCollectionsData (request, reply) {
         batch.push(function (done) {
           var collection =  {
             url: row[0],
-            title: row[0].split('/')[5].replace(/-/g,' '),
+            title: getTitle(row[0]),
             views: row[1],
             users: row[2],
             avgTime: row[3],
@@ -115,7 +121,7 @@ function getSharesData (request, reply) {
         batch.push(function (done) {
           var collection =  {
             url: row[0],
-            title: row[0].split('/')[5].replace(/-/g,' ')
+            title: getTitle(row[0])
           };
 
           switch (row[1]) {
@@ -187,7 +193,7 @@ function getEventsData (request, reply) {
         batch.push(function (done) {
           var collection =  {
             url: row[0],
-            title: row[0].split('/')[5].replace(/-/g,' ')
+            title: getTitle(row[0])
           };
 
           switch (row[1]) {

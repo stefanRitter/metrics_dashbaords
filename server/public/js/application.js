@@ -27072,7 +27072,10 @@ angular.module('app').controller('countriesController', ['$http', function ($htt
   };
 
   vm.formatCollectionPath = function (path) {
-    return path ? path.split('/')[5].replace(/-/g,' ') : '';
+    if (!path) { return ''; }
+
+    var splitted = path.split('/');
+    return splitted[splitted.length-1].replace(/-/g,' ');
   };
 
   $http
@@ -27104,7 +27107,10 @@ angular.module('app').controller('weeksController', ['$http', function ($http) {
   };
 
   vm.formatCollectionPath = function (path) {
-    return path ? path.split('/')[5].replace(/-/g,' ') : '';
+    if (!path) { return ''; }
+
+    var splitted = path.split('/');
+    return splitted[splitted.length-1].replace(/-/g,' ');
   };
 
   vm.calcBgd = function (field, index) {
