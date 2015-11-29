@@ -14,11 +14,17 @@ angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope'
     .get('/session', {})
     .error(function () {
       console.log('user not authenticated');
+
       previousPath = $location.path();
       if (previousPath === '' || previousPath === '/' || previousPath === '/login') {
         previousPath = '/collections';
       }
-      $location.path('/login');
+
+      if (previousPath === '/join') {
+        $location.path('/join');
+      } else {
+        $location.path('/login');
+      }
     })
     .success(login);
 
