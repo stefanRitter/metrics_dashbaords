@@ -18,7 +18,9 @@ div(ng-controller="collectionsController as vm")
       th(ng-click="vm.changeFilter('bounceRate')", ng-class="{'active': vm.orderFilter=='bounceRate', 'up': vm.orderFilterDirection}") Bounce rate
       th(ng-click="vm.changeFilter('bannerClicks')", ng-class="{'active': vm.orderFilter=='bannerClicks', 'up': vm.orderFilterDirection}") Banner clicks
       th(ng-click="vm.changeFilter('addStoryClicks')", ng-class="{'active': vm.orderFilter=='addStoryClicks', 'up': vm.orderFilterDirection}") Add Story clicks
-      th(ng-click="vm.changeFilter('showMoreClicks')", ng-class="{'active': vm.orderFilter=='showMoreClicks', 'up': vm.orderFilterDirection}") More clicks
+      th(ng-click="vm.changeFilter('showAllStories')", ng-class="{'active': vm.orderFilter=='showAllStories', 'up': vm.orderFilterDirection}") Show all stories clicks
+      th(ng-click="vm.changeFilter('pagination')", ng-class="{'active': vm.orderFilter=='pagination', 'up': vm.orderFilterDirection}") Pagination clicks
+      th(ng-click="vm.changeFilter('showMoreClicks')", ng-class="{'active': vm.orderFilter=='showMoreClicks', 'up': vm.orderFilterDirection}") Show More clicks
       th(ng-click="vm.changeFilter('externalClicks')", ng-class="{'active': vm.orderFilter=='externalClicks', 'up': vm.orderFilterDirection}") External clicks
       th(ng-click="vm.changeFilter('otherNavigationClicks')", ng-class="{'active': vm.orderFilter=='otherNavigationClicks', 'up': vm.orderFilterDirection}") Prev/Next clicks
       //th(ng-click="vm.changeFilter('comments')", ng-class="{'active': vm.orderFilter=='comments', 'up': vm.orderFilterDirection}") Comments
@@ -38,6 +40,8 @@ div(ng-controller="collectionsController as vm")
       td {{collection.bounceRate}}%
       td {{collection.bannerClicks}}
       td {{collection.addStoryClicks}}
+      td {{collection.showAllStories}}
+      td {{collection.pagination}}
       td {{collection.showMoreClicks}}
       td {{collection.externalClicks}}
       td {{collection.otherNavigationClicks}}

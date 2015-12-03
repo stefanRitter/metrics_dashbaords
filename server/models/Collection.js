@@ -19,6 +19,8 @@ schema = mongoose.Schema({
 
   bannerClicks: {type: Number, default: 0},
   addStoryClicks: {type: Number, default: 0},
+  showAllStories: {type: Number, default: 0},
+  pagination: {type: Number, default: 0},
 
   showMoreClicks: {type: Number, default: 0},
   externalClicks: {type: Number, default: 0},

@@ -225,6 +225,12 @@ function getEventsData (request, reply) {
             case 'add story':
               collection.addStoryClicks = row[2];
               break;
+            case 'see all stories':
+              collection.showAllStories = row[2];
+              break;
+            case 'pagination':
+              collection.pagination = row[2];
+              break;
           }
 
           Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err) {
@@ -290,6 +296,8 @@ function consolidateCollections (request, reply) {
         consolidatedCollections[cleanTitle].linkedinShares += collection.linkedinShares;
         consolidatedCollections[cleanTitle].sharelineShares += collection.sharelineShares;
         consolidatedCollections[cleanTitle].addStoryClicks += collection.addStoryClicks;
+        consolidatedCollections[cleanTitle].showAllStories += collection.showAllStories;
+        consolidatedCollections[cleanTitle].pagination += collection.pagination;
       }
     });
 
