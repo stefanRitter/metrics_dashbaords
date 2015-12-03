@@ -289,6 +289,7 @@ function consolidateCollections (request, reply) {
         consolidatedCollections[cleanTitle].facebookShares += collection.facebookShares;
         consolidatedCollections[cleanTitle].linkedinShares += collection.linkedinShares;
         consolidatedCollections[cleanTitle].sharelineShares += collection.sharelineShares;
+        consolidatedCollections[cleanTitle].addStoryClicks += collection.addStoryClicks;
       }
     });
 
