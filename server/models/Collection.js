@@ -18,6 +18,7 @@ schema = mongoose.Schema({
   bounceRate: {type: Number, default: 0},
 
   bannerClicks: {type: Number, default: 0},
+  addStoryClicks: {type: Number, default: 0},
 
   showMoreClicks: {type: Number, default: 0},
   externalClicks: {type: Number, default: 0},

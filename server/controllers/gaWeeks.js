@@ -134,6 +134,9 @@ function getSharesData (request, reply, date) {
           case 'shareline':
             currentWeek.sharelineShares = row[1];
             break;
+          case 'linkedin':
+            currentWeek.linkedinShares = row[1];
+            break;
         }
       });
 
@@ -205,6 +208,9 @@ function getEventsData (request, reply, date) {
             break;
           case 'email':
             currentWeek.newEmails = row[1];
+            break;
+          case 'banner':
+            currentWeek.bannerClicks = row[1];
             break;
         }
       });

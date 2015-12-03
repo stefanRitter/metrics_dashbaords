@@ -222,6 +222,9 @@ function getEventsData (request, reply) {
             case 'banner':
               collection.bannerClicks = row[2];
               break;
+            case 'add story':
+              collection.addStoryClicks = row[2];
+              break;
           }
 
           Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err) {

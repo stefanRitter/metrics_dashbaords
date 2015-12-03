@@ -124,6 +124,9 @@ function getSharesData (request, reply) {
             case 'shareline':
               model.sharelineShares = row[2];
               break;
+            case 'linkedin':
+              model.linkedinShares = row[2];
+              break;
           }
 
           Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
@@ -162,6 +165,7 @@ function getEventsData (request, reply) {
       'metrics': 'ga:uniqueEvents',
       'dimensions': 'ga:country,ga:eventCategory',
     }, function (err, result) {
+      /* jshint maxcomplexity: false */
 
       if (err) {
         console.error('DATA ERROR', err);
@@ -203,6 +207,9 @@ function getEventsData (request, reply) {
               break;
             case 'bookmark':
               collection.bookmarks = row[2];
+              break;
+            case 'banner':
+              collection.bannerClicks = row[2];
               break;
           }
 
