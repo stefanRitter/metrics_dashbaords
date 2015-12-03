@@ -10,9 +10,12 @@ function updateCollections (cb) {
       console.log(response);
       server['/ga/collections_events']({}, function (response) {
         console.log(response);
+        server['/ga/consolidate_collections']({}, function (response) {
+          console.log(response);
 
-        if (cb) { cb(); }
-        else { process.exit(); }
+          if (cb) { cb(); }
+          else { process.exit(); }
+        });
       });
     });
   });
