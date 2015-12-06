@@ -12,6 +12,7 @@ var googleapis = require('googleapis'),
 
 var gaSetup = require('../utils/gaSetup');
 
+var ALL_DATA_VIEW_ID = gaSetup.ALL_DATA_VIEW_ID;
 var COLLECTIONS_VIEW_ID = gaSetup.COLLECTIONS_VIEW_ID;
 var START_DATE = gaSetup.START_DATE;
 var END_DATE = gaSetup.END_DATE;
@@ -27,7 +28,7 @@ function getBasicData (request, reply) {
 
     analytics.data.ga.get({
       auth: authClient,
-      'ids': COLLECTIONS_VIEW_ID,
+      'ids': ALL_DATA_VIEW_ID,
       'start-date': START_DATE,
       'end-date': END_DATE,
       'metrics': 'ga:pageviews,ga:users,ga:avgTimeOnPage,ga:bounceRate',
@@ -84,7 +85,7 @@ function getSharesData (request, reply) {
 
     analytics.data.ga.get({
       auth: authClient,
-      'ids': COLLECTIONS_VIEW_ID,
+      'ids': ALL_DATA_VIEW_ID,
       'start-date': START_DATE,
       'end-date': END_DATE,
       'max-results': 10000,
@@ -158,7 +159,7 @@ function getEventsData (request, reply) {
 
     analytics.data.ga.get({
       auth: authClient,
-      'ids': COLLECTIONS_VIEW_ID,
+      'ids': ALL_DATA_VIEW_ID,
       'start-date': START_DATE,
       'end-date': END_DATE,
       'max-results': 10000,
@@ -185,35 +186,44 @@ function getEventsData (request, reply) {
 
       result.rows.forEach(function (row) {
         batch.push(function (done) {
-          var collection =  {
+          var country =  {
             name: row[0]
           };
 
           switch (row[1]) {
             case 'show more':
-              collection.showMoreClicks = row[2];
+              country.showMoreClicks = row[2];
               break;
             case 'external link':
-              collection.externalClicks = row[2];
+              country.externalClicks = row[2];
               break;
             case 'other navigation':
-              collection.otherNavigationClicks = row[2];
+              country.otherNavigationClicks = row[2];
               break;
             case 'comment':
-              collection.comments = row[2];
+              country.comments = row[2];
               break;
             case 'upvote':
-              collection.upvotes = row[2];
+              country.upvotes = row[2];
               break;
             case 'bookmark':
-              collection.bookmarks = row[2];
+              country.bookmarks = row[2];
               break;
             case 'banner':
-              collection.bannerClicks = row[2];
+              country.bannerClicks = row[2];
+              break;
+            case 'mediawallclick':
+              country.mediaWallClick = row[2];
+              break;
+            case 'mediawallscroll':
+              country.mediaWallScroll = row[2];
+              break;
+            case 'mediawall':
+              country.mediaWall = row[2];
               break;
           }
 
-          Country.findOneAndUpdate({name: collection.name}, collection, {upsert: true}, function (err) {
+          Country.findOneAndUpdate({name: country.name}, country, {upsert: true}, function (err) {
             if (err) {
               console.log(err);
               return done(err);
@@ -259,28 +269,35 @@ function getMostPopularCollection (request, reply) {
 
       var matrix = {};
       result.rows.forEach(function (row) {
-        if (!matrix[row[0]]) { matrix[row[0]] = []; }
+        // if no country create one
+        if (!matrix[row[0]]) { matrix[row[0]] = {}; }
 
-        matrix[row[0]].push({
-          users: row[2],
-          collection: row[1]
-        });
+        // remove ? params from title
+        var cleanTitle = row[1].split('?')[0];
+        if (!matrix[row[0]][cleanTitle]) { matrix[row[0]][cleanTitle] = 0; }
+        matrix[row[0]][cleanTitle] += parseInt(row[2],10);
       });
 
       var batch = new Batch();
 
       Object.keys(matrix).forEach(function (country) {
         // sort by most popular
-        matrix[country].sort(function (a, b) {
+        var collectionArr = [];
+
+        Object.keys(matrix[country]).forEach(function (collectionTitle) {
+          collectionArr.push({collection: collectionTitle, users: matrix[country][collectionTitle]});
+        });
+
+        collectionArr.sort(function (a, b) {
           return b.users - a.users;
         });
 
         batch.push(function (done) {
           var model =  {
             name: country,
-            collection1: matrix[country][0].collection,
-            collection2: (matrix[country][1] ? matrix[country][1] : {}).collection,
-            collection3: (matrix[country][2] ? matrix[country][2] : {}).collection,
+            collection1: collectionArr[0].collection,
+            collection2: (collectionArr[1] ? collectionArr[1] : {}).collection,
+            collection3: (collectionArr[2] ? collectionArr[2] : {}).collection,
           };
 
           Country.findOneAndUpdate({name: model.name}, model, {upsert: true}, function (err) {
