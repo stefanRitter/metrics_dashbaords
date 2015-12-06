@@ -36,6 +36,7 @@ schema = mongoose.Schema({
 
   mediaWallScroll: {type: Number, default: 0},
   mediaWallClick: {type: Number, default: 0},
+  mediaWall: {type: Number, default: 0},
 
   bannerClicks: {type: Number, default: 0},
   showMoreClicks: {type: Number, default: 0},

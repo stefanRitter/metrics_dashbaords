@@ -31,6 +31,7 @@ div(ng-controller="weeksController as vm")
       th(ng-click="vm.changeFilter('otherNavigationClicks')", ng-class="{'active': vm.orderFilter=='otherNavigationClicks', 'up': vm.orderFilterDirection}") Prev/Next clicks
       th(ng-click="vm.changeFilter('mediaWallClick')", ng-class="{'active': vm.orderFilter=='mediaWallClick', 'up': vm.orderFilterDirection}") MediaWall clicks
       th(ng-click="vm.changeFilter('mediaWallScroll')", ng-class="{'active': vm.orderFilter=='mediaWallScroll', 'up': vm.orderFilterDirection}") MediaWall scroll
+      th(ng-click="vm.changeFilter('mediaWall')", ng-class="{'active': vm.orderFilter=='mediaWall', 'up': vm.orderFilterDirection}") MediaWall other events
       //th(ng-click="vm.changeFilter('comments')", ng-class="{'active': vm.orderFilter=='comments', 'up': vm.orderFilterDirection}") Comments
       //th(ng-click="vm.changeFilter('upvotes')", ng-class="{'active': vm.orderFilter=='upvotes', 'up': vm.orderFilterDirection}") Upvotes
       //th(ng-click="vm.changeFilter('bookmarks')", ng-class="{'active': vm.orderFilter=='bookmarks', 'up': vm.orderFilterDirection}") Bookmarks
@@ -65,6 +66,7 @@ div(ng-controller="weeksController as vm")
       td(style="{{vm.calcBgd('otherNavigationClicks', $index)}}") {{week.otherNavigationClicks}}
       td(style="{{vm.calcBgd('mediaWallClick', $index)}}") {{week.mediaWallClick}}
       td(style="{{vm.calcBgd('mediaWallScroll', $index)}}") {{week.mediaWallScroll}}
+      td(style="{{vm.calcBgd('mediaWallScroll', $index)}}") {{week.mediaWall}}
       //td(style="{{vm.calcBgd('comments', $index)}}") {{week.comments}}
       //td(style="{{vm.calcBgd('upvotes', $index)}}") {{week.upvotes}}
       //td(style="{{vm.calcBgd('bookmarks', $index)}}") {{week.bookmarks}}

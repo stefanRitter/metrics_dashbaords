@@ -21,20 +21,22 @@ function getDates (date) {
   var today  = !!date ? new Date(date) : new Date();
   var dayNr = (today.getDay() + 6) % 7;
   var monday = new Date(today.setDate(today.getDate() - dayNr));
-  var sunday = new Date(today.setDate(today.getDate() - dayNr + 8));
+  var sunday = new Date(today.setDate(monday.getDate() + 6));
+
+  console.log(monday.getDate(), sunday.getDate());
 
   function preZero (num) {
     return num <= 9 ? '0'+num : num;
   }
 
   function getWeek () {
-    var onejan = new Date(today.getFullYear(), 0, 1);
-    return Math.ceil((((today - onejan) / 86400000) + onejan.getDay() + 1) / 7)-1;
+    var onejan = new Date(monday.getFullYear(), 0, 1);
+    return Math.ceil((((monday - onejan) / 86400000) + onejan.getDay() + 1) / 7)-1;
   }
 
   return {
     calendarWeek: getWeek(),
-    year: today.getYear(),
+    year: monday.getYear(),
     startDate: monday.getFullYear()+'-'+preZero(monday.getMonth()+1)+'-'+preZero(monday.getDate()),
     endDate: sunday.getFullYear()+'-'+preZero(sunday.getMonth()+1)+'-'+preZero(sunday.getDate())
   };
@@ -43,6 +45,7 @@ function getDates (date) {
 
 function getBasicData (request, reply, date) {
   var currentWeek = getDates(date);
+  console.log(currentWeek);
 
   authClient.authorize(function (err) {
     if (err) {
@@ -154,6 +157,7 @@ function getSharesData (request, reply, date) {
 
 function getEventsData (request, reply, date) {
   var currentWeek = getDates(date);
+  console.log('currentweek', currentWeek);
 
   authClient.authorize(function (err) {
     if (err) {
@@ -212,6 +216,15 @@ function getEventsData (request, reply, date) {
           case 'banner':
             currentWeek.bannerClicks = row[1];
             break;
+          case 'mediawallclick':
+            currentWeek.mediaWallClick = row[1];
+            break;
+          case 'mediawallscroll':
+            currentWeek.mediaWallScroll = row[1];
+            break;
+          case 'mediawall':
+            currentWeek.mediaWall = row[1];
+            break;
         }
       });
 
@@ -253,7 +266,20 @@ function getMostPopularCollection (request, reply, date) {
         return reply('No collections this week...');
       }
 
-      var sorted = result.rows.sort(function (a, b) {
+      var matrix = {};
+      result.rows.forEach(function (row) {
+        // if no collection create one
+        var cleanTitle = row[0].split('?')[0];
+        if (!matrix[cleanTitle]) { matrix[cleanTitle] = 0; }
+        matrix[cleanTitle] += parseInt(row[1],10);
+      });
+
+      var sorted = [];
+      Object.keys(matrix).forEach(function (title) {
+        sorted.push([title, matrix[title]]);
+      });
+
+      sorted = result.rows.sort(function (a, b) {
         return b[1] - a[1];
       });
 
