@@ -171,7 +171,7 @@ function getEventsData (request, reply, date) {
       'start-date': currentWeek.startDate,
       'end-date': currentWeek.endDate,
       'max-results': 10000,
-      'metrics': 'ga:uniqueEvents',
+      'metrics': 'ga:totalEvents',
       'dimensions': 'ga:eventCategory',
     }, function (err, result) {
       /* jshint maxcomplexity: false */

@@ -8,8 +8,12 @@ function updateCollections (cb) {
     server['/ga/countries_shares']({}, function () {
       server['/ga/countries_events']({}, function () {
         server['/ga/countries_popular']({}, function () {
-          if (cb) { cb(); }
-          else { process.exit(); }
+          server['/ga/countries_bannerclicks']({}, function () {
+            server['/ga/countries_mediawall']({}, function () {
+              if (cb) { cb(); }
+              else { process.exit(); }
+            });
+          });
         });
       });
     });

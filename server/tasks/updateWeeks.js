@@ -9,8 +9,10 @@ function updateCollections (cb, date) {
       server['/ga/weeks_events']({}, function () {
         server['/ga/weeks_popular']({}, function () {
           server['/ga/weeks_login']({}, function () {
-            if (cb) { cb(); }
-            else { process.exit(); }
+            server['/ga/weeks_bannerclicks']({}, function () {
+              if (cb) { cb(); }
+              else { process.exit(); }
+            }, date);
           }, date);
         }, date);
       }, date);

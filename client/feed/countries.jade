@@ -17,7 +17,7 @@ div(ng-controller="countriesController as vm")
       th(ng-click="vm.changeFilter('collection1')", ng-class="{'active': vm.orderFilter=='collection1', 'up': vm.orderFilterDirection}") Most read collection
       th(ng-click="vm.changeFilter('collection2')", ng-class="{'active': vm.orderFilter=='collection2', 'up': vm.orderFilterDirection}") 2. most read
       th(ng-click="vm.changeFilter('collection3')", ng-class="{'active': vm.orderFilter=='collection3', 'up': vm.orderFilterDirection}") 3. most read
-      th(ng-click="vm.changeFilter('bannerClicks')", ng-class="{'active': vm.orderFilter=='bannerClicks', 'up': vm.orderFilterDirection}") Banner clicks
+      //th(ng-click="vm.changeFilter('bannerClicks')", ng-class="{'active': vm.orderFilter=='bannerClicks', 'up': vm.orderFilterDirection}") Banner clicks
       th(ng-click="vm.changeFilter('bannerTopClicks')", ng-class="{'active': vm.orderFilter=='bannerTopClicks', 'up': vm.orderFilterDirection}") Top Banner clicks
       th(ng-click="vm.changeFilter('bannerBottomClicks')", ng-class="{'active': vm.orderFilter=='bannerBottomClicks', 'up': vm.orderFilterDirection}") Bottom Banner clicks
       th(ng-click="vm.changeFilter('showMoreClicks')", ng-class="{'active': vm.orderFilter=='showMoreClicks', 'up': vm.orderFilterDirection}") More clicks
@@ -25,7 +25,7 @@ div(ng-controller="countriesController as vm")
       th(ng-click="vm.changeFilter('otherNavigationClicks')", ng-class="{'active': vm.orderFilter=='otherNavigationClicks', 'up': vm.orderFilterDirection}") Prev/Next clicks
       th(ng-click="vm.changeFilter('mediaWallClick')", ng-class="{'active': vm.orderFilter=='mediaWallClick', 'up': vm.orderFilterDirection}") MediaWall clicks
       th(ng-click="vm.changeFilter('mediaWallScroll')", ng-class="{'active': vm.orderFilter=='mediaWallScroll', 'up': vm.orderFilterDirection}") MediaWall scroll
-      th(ng-click="vm.changeFilter('mediaWall')", ng-class="{'active': vm.orderFilter=='mediaWall', 'up': vm.orderFilterDirection}") MediaWall other events
+      //th(ng-click="vm.changeFilter('mediaWall')", ng-class="{'active': vm.orderFilter=='mediaWall', 'up': vm.orderFilterDirection}") MediaWall other events
       //th(ng-click="vm.changeFilter('comments')", ng-class="{'active': vm.orderFilter=='comments', 'up': vm.orderFilterDirection}") Comments
       //th(ng-click="vm.changeFilter('upvotes')", ng-class="{'active': vm.orderFilter=='upvotes', 'up': vm.orderFilterDirection}") Upvotes
       //th(ng-click="vm.changeFilter('bookmarks')", ng-class="{'active': vm.orderFilter=='bookmarks', 'up': vm.orderFilterDirection}") Bookmarks
@@ -46,7 +46,7 @@ div(ng-controller="countriesController as vm")
         a(href="//beta.iht.com{{country.collection2}}", target="_blank") {{vm.formatCollectionPath(country.collection2)}}
       td
         a(href="//beta.iht.com{{country.collection3}}", target="_blank") {{vm.formatCollectionPath(country.collection3)}}
-      td {{country.bannerClicks}}
+      //td {{country.bannerClicks}}
       td {{country.bannerTopClicks}}
       td {{country.bannerBottomClicks}}
       td {{country.showMoreClicks}}
@@ -54,7 +54,7 @@ div(ng-controller="countriesController as vm")
       td {{country.otherNavigationClicks}}
       td {{country.mediaWallClick}}
       td {{country.mediaWallScroll}}
-      td {{country.mediaWall}}
+      //td {{country.mediaWall}}
       //td {{country.comments}}
       //td {{country.upvotes}}
       //td {{country.bookmarks}}

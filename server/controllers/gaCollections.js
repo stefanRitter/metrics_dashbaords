@@ -172,7 +172,7 @@ function getEventsData (request, reply) {
       'start-date': START_DATE,
       'end-date': END_DATE,
       'max-results': 10000,
-      'metrics': 'ga:uniqueEvents',
+      'metrics': 'ga:totalEvents',
       'dimensions': 'ga:pagePath,ga:eventCategory',
     }, function (err, result) {
       /* jshint maxcomplexity: false */

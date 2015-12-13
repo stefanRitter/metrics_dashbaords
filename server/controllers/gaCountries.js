@@ -163,7 +163,7 @@ function getEventsData (request, reply) {
       'start-date': START_DATE,
       'end-date': END_DATE,
       'max-results': 10000,
-      'metrics': 'ga:uniqueEvents',
+      'metrics': 'ga:totalEvents',
       'dimensions': 'ga:country,ga:eventCategory',
     }, function (err, result) {
       /* jshint maxcomplexity: false */
@@ -217,9 +217,6 @@ function getEventsData (request, reply) {
               break;
             case 'mediawallscroll':
               country.mediaWallScroll = row[2];
-              break;
-            case 'mediawall':
-              country.mediaWall = row[2];
               break;
           }
 
@@ -320,8 +317,157 @@ function getMostPopularCollection (request, reply) {
 }
 
 
-function getBannerClicks () {
+function getBannerClicks (request, reply) {
+  authClient.authorize(function (err) {
+    if (err) {
+      console.log('AUTH ERROR: ', err);
+      return reply(Boom.badImplementation(err));
+    }
 
+    analytics.data.ga.get({
+      auth: authClient,
+      'ids': ALL_DATA_VIEW_ID,
+      'start-date': START_DATE,
+      'end-date': END_DATE,
+      'max-results': 10000,
+      'metrics': 'ga:totalEvents',
+      'dimensions': 'ga:country,ga:eventCategory,ga:eventAction',
+    }, function (err, result) {
+      /* jshint maxcomplexity: false */
+
+      if (err) {
+        console.error('DATA ERROR', err);
+        return reply(Boom.badImplementation(err));
+      }
+
+      if (result.totalResults === 0) {
+        return reply('No events this week...');
+      }
+
+      console.log('total events:', result.totalResults);
+      if (result.totalResults > 10000) {
+        return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
+      }
+
+      var batch = new Batch();
+
+      result.rows.forEach(function (row) {
+        batch.push(function (done) {
+          var country =  {
+            name: row[0]
+          };
+
+          switch (row[1]) {
+            case 'banner':
+              if (row[2] === 'top') {
+                country.bannerTopClicks = row[3];
+              } else {
+                country.bannerBottomClicks = row[3];
+              }
+              break;
+          }
+
+          Country.findOneAndUpdate({name: country.name}, country, {upsert: true}, function (err) {
+            if (err) {
+              console.log(err);
+              return done(err);
+            }
+            done();
+          });
+        });
+      });
+
+      batch.on('progress', function () {});
+
+      batch.end(function () {
+        reply(result.rows.length + ' events registered.');
+      });
+    });
+  });
+}
+
+
+function getMediaWall (request, reply) {
+  authClient.authorize(function (err) {
+    if (err) {
+      console.log('AUTH ERROR: ', err);
+      return reply(Boom.badImplementation(err));
+    }
+
+    analytics.data.ga.get({
+      auth: authClient,
+      'ids': ALL_DATA_VIEW_ID,
+      'start-date': START_DATE,
+      'end-date': END_DATE,
+      'max-results': 10000,
+      'metrics': 'ga:totalEvents',
+      'dimensions': 'ga:country,ga:eventCategory,ga:eventAction',
+    }, function (err, result) {
+      /* jshint maxcomplexity: false */
+
+      if (err) {
+        console.error('DATA ERROR', err);
+        return reply(Boom.badImplementation(err));
+      }
+
+      if (result.totalResults === 0) {
+        return reply('No events this week...');
+      }
+
+      console.log('total events:', result.totalResults);
+      if (result.totalResults > 10000) {
+        return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
+      }
+
+      var batch = new Batch();
+      var countries = {};
+
+      result.rows.forEach(function (row) {
+        switch (row[1]) {
+          case 'mediawall':
+            countries[row[0]] = countries[row[0]] || { mediaWallClick: 0, mediaWallScroll: 0 };
+
+            if (row[2] === 'click') {
+              countries[row[0]].mediaWallClick = parseInt(row[3], 10);
+            }
+            if (row[2] === 'scroll') {
+              countries[row[0]].mediaWallScroll = parseInt(row[3], 10);
+            }
+            break;
+        }
+
+      });
+
+      Object.keys(countries).forEach(function (countryName) {
+        batch.push(function (done) {
+          Country.findOne({name: countryName}, function (err, model) {
+            if (err) {
+              console.log(err);
+              return done(err);
+            }
+
+            model.mediaWallClick  += (model.mediaWallClick || 0)  + countries[countryName].mediaWallClick;
+            model.mediaWallScroll += (model.mediaWallScroll || 0) + countries[countryName].mediaWallScroll;
+
+            model.save(function (err) {
+              if (err) {
+                console.log(err);
+                return done(err);
+              }
+              console.log('done: ', countryName);
+              done();
+            });
+          });
+        });
+      });
+
+      batch.on('progress', function () {});
+
+      batch.end(function () {
+        reply(result.rows.length + ' events registered.');
+      });
+    });
+  });
 }
 
 
@@ -399,6 +545,22 @@ module.exports = function (_server) {
       path: '/ga/countries_bannerclicks',
       config: {
         handler: getBannerClicks,
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
+      }
+    },
+    {
+      method: 'GET',
+      path: '/ga/countries_mediawall',
+      config: {
+        handler: getMediaWall,
         auth: {
           mode: 'try',
           strategy: 'session'
