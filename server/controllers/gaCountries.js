@@ -319,6 +319,13 @@ function getMostPopularCollection (request, reply) {
   });
 }
 
+
+function getBannerClicks () {
+
+}
+
+
+
 module.exports = function (_server) {
   server = _server;
 
@@ -376,6 +383,22 @@ module.exports = function (_server) {
       path: '/ga/countries_popular',
       config: {
         handler: getMostPopularCollection,
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
+      }
+    },
+    {
+      method: 'GET',
+      path: '/ga/countries_bannerclicks',
+      config: {
+        handler: getBannerClicks,
         auth: {
           mode: 'try',
           strategy: 'session'

@@ -213,17 +213,11 @@ function getEventsData (request, reply, date) {
           case 'email':
             currentWeek.newEmails = row[1];
             break;
-          case 'banner':
-            currentWeek.bannerClicks = row[1];
-            break;
           case 'mediawallclick':
             currentWeek.mediaWallClick = row[1];
             break;
           case 'mediawallscroll':
             currentWeek.mediaWallScroll = row[1];
-            break;
-          case 'mediawall':
-            currentWeek.mediaWall = row[1];
             break;
         }
       });
@@ -346,8 +340,62 @@ function getLoggedInData (request, reply, date) {
 }
 
 
-function getBannerClicks () {
-  
+function getBannerClicks (request, reply, date) {
+  var currentWeek = getDates(date);
+  console.log('currentweek', currentWeek);
+
+  authClient.authorize(function (err) {
+    if (err) {
+      console.log('AUTH ERROR: ', err);
+      return reply(Boom.badImplementation(err));
+    }
+
+    analytics.data.ga.get({
+      auth: authClient,
+      'ids': ALL_DATA_VIEW_ID,
+      'start-date': currentWeek.startDate,
+      'end-date': currentWeek.endDate,
+      'max-results': 10000,
+      'metrics': 'ga:totalEvents',
+      'dimensions': 'ga:eventCategory,ga:eventAction',
+    }, function (err, result) {
+      /* jshint maxcomplexity: false */
+
+      if (err) {
+        console.error('DATA ERROR', err);
+        return reply(Boom.badImplementation(err));
+      }
+
+      console.log('total events:', result.totalResults);
+      if (result.totalResults > 10000) {
+        return reply(Boom.badImplementation('TOO MANY EVENTS!!!'));
+      }
+
+      if (result.totalResults === 0) {
+        return reply('No events this week...');
+      }
+
+      result.rows.forEach(function (row) {
+        switch (row[0]) {
+          case 'banner':
+            if (row[1] === 'top') {
+              currentWeek.bannerTopClicks = row[2];
+            } else {
+              currentWeek.bannerBottomClicks = row[2];
+            }
+            break;
+        }
+      });
+
+      Week.findOneAndUpdate({calendarWeek: currentWeek.calendarWeek}, currentWeek, {upsert: true}, function (err) {
+        if (err) {
+          console.error(err);
+          return reply(Boom.badImplementation(err));
+        }
+        reply(result.rows.length + ' events registered.');
+      });
+    });
+  });
 }
 
 
