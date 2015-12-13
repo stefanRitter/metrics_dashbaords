@@ -18,6 +18,8 @@ div(ng-controller="countriesController as vm")
       th(ng-click="vm.changeFilter('collection2')", ng-class="{'active': vm.orderFilter=='collection2', 'up': vm.orderFilterDirection}") 2. most read
       th(ng-click="vm.changeFilter('collection3')", ng-class="{'active': vm.orderFilter=='collection3', 'up': vm.orderFilterDirection}") 3. most read
       th(ng-click="vm.changeFilter('bannerClicks')", ng-class="{'active': vm.orderFilter=='bannerClicks', 'up': vm.orderFilterDirection}") Banner clicks
+      th(ng-click="vm.changeFilter('bannerTopClicks')", ng-class="{'active': vm.orderFilter=='bannerTopClicks', 'up': vm.orderFilterDirection}") Top Banner clicks
+      th(ng-click="vm.changeFilter('bannerBottomClicks')", ng-class="{'active': vm.orderFilter=='bannerBottomClicks', 'up': vm.orderFilterDirection}") Bottom Banner clicks
       th(ng-click="vm.changeFilter('showMoreClicks')", ng-class="{'active': vm.orderFilter=='showMoreClicks', 'up': vm.orderFilterDirection}") More clicks
       th(ng-click="vm.changeFilter('externalClicks')", ng-class="{'active': vm.orderFilter=='externalClicks', 'up': vm.orderFilterDirection}") External clicks
       th(ng-click="vm.changeFilter('otherNavigationClicks')", ng-class="{'active': vm.orderFilter=='otherNavigationClicks', 'up': vm.orderFilterDirection}") Prev/Next clicks
@@ -45,6 +47,8 @@ div(ng-controller="countriesController as vm")
       td
         a(href="//beta.iht.com{{country.collection3}}", target="_blank") {{vm.formatCollectionPath(country.collection3)}}
       td {{country.bannerClicks}}
+      td {{country.bannerTopClicks}}
+      td {{country.bannerBottomClicks}}
       td {{country.showMoreClicks}}
       td {{country.externalClicks}}
       td {{country.otherNavigationClicks}}
