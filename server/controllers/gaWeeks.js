@@ -346,6 +346,11 @@ function getLoggedInData (request, reply, date) {
 }
 
 
+function getBannerClicks () {
+  
+}
+
+
 module.exports = function (_server) {
   server = _server;
 
@@ -419,6 +424,22 @@ module.exports = function (_server) {
       path: '/ga/weeks_login',
       config: {
         handler: getLoggedInData,
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
+        }
+      }
+    },
+    {
+      method: 'GET',
+      path: '/ga/weeks_bannerclicks',
+      config: {
+        handler: getBannerClicks,
         auth: {
           mode: 'try',
           strategy: 'session'
