@@ -1,0 +1,32 @@
+div(ng-controller="weeksController as vm")
+  .margin-top.center
+    h2.margin-top 
+      a.underline.italic(href="/weeks") Weekly
+      | &nbsp;&nbsp;&nbsp;
+      a(href="/collections") By Collection
+      | &nbsp;&nbsp;&nbsp;
+      a(href="/countries") By Country
+
+  table.margin-top-big
+    tr
+      th(ng-click="vm.changeFilter('calendarWeek')") Week
+      th(ng-click="vm.changeFilter('startDate')") Monday
+      th(ng-click="vm.changeFilter('views')") Views
+      th(ng-click="vm.changeFilter('bannerTopClicks')") Total Banner clicks
+      th(ng-click="vm.changeFilter('bannerTopClicks')") Total conversion rate
+      th(ng-click="vm.changeFilter('bannerTopClicks')") Top Banner clicks
+      th(ng-click="vm.changeFilter('bannerTopClicks')") Top conversion rate
+      th(ng-click="vm.changeFilter('bannerBottomClicks')") Bottom Banner clicks
+      th(ng-click="vm.changeFilter('bannerBottomClicks')") Bottom conversion rate
+        
+    tr(ng-repeat="week in (vm.weeks | orderBy: vm.orderFilter:vm.orderFilterDirection)")
+      td {{week.calendarWeek}}
+      td(style="min-width:82px;") {{week.startDate}}
+      td {{week.views}}
+      td {{week.bannerTopClicks + week.bannerBottomClicks}}
+      td {{((week.bannerTopClicks + week.bannerBottomClicks)/(week.views/100)).toFixed(2)}} %
+      td {{week.bannerTopClicks}}
+      td {{((week.bannerTopClicks)/(week.views/100)).toFixed(2)}} %
+      td {{week.bannerBottomClicks}}
+      td {{((week.bannerBottomClicks)/(week.views/100)).toFixed(2)}} %
+      
