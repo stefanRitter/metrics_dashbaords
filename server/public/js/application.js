@@ -27120,6 +27120,10 @@ angular.module('app').controller('weeksController', ['$http', function ($http) {
   };
 
   vm.calcBgd = function (field, index) {
+    if (field === 'mediaWallClick' || field === 'mediaWallScroll') {
+      return 'background: rgba(255, 0, 0, 0.37);';
+    }
+
     if (index === 0 || vm.orderFilter !== 'calendarWeek' || vm.orderFilterDirection === true) {
       return 'background: transparent;';
     }
