@@ -13,7 +13,6 @@ div(ng-controller="weeksController as vm")
       th(ng-click="vm.changeFilter('startDate')", ng-class="{'active': vm.orderFilter=='startDate', 'up': vm.orderFilterDirection}") Monday
       th(ng-click="vm.changeFilter('bannerTopClicks')", ng-class="{'active': vm.orderFilter=='bannerTopClicks', 'up': vm.orderFilterDirection}") Top Banner clicks
       th(ng-click="vm.changeFilter('bannerBottomClicks')", ng-class="{'active': vm.orderFilter=='bannerBottomClicks', 'up': vm.orderFilterDirection}") Bottom Banner clicks
-      th(ng-click="vm.changeFilter('showMoreClicks')", ng-class="{'active': vm.orderFilter=='showMoreClicks', 'up': vm.orderFilterDirection}") More clicks
       th(ng-click="vm.changeFilter('externalClicks')", ng-class="{'active': vm.orderFilter=='externalClicks', 'up': vm.orderFilterDirection}") External clicks
       th(ng-click="vm.changeFilter('otherNavigationClicks')", ng-class="{'active': vm.orderFilter=='otherNavigationClicks', 'up': vm.orderFilterDirection}") Prev/Next clicks
       th(ng-click="vm.changeFilter('mediaWallClick')", ng-class="{'active': vm.orderFilter=='mediaWallClick', 'up': vm.orderFilterDirection}") MediaWall clicks
@@ -31,7 +30,6 @@ div(ng-controller="weeksController as vm")
       td(style="min-width:82px;") {{week.startDate}}
       td(style="{{vm.calcBgd('bannerTopClicks', $index)}}") {{week.bannerTopClicks}}
       td(style="{{vm.calcBgd('bannerBottomClicks', $index)}}") {{week.bannerBottomClicks}}
-      td(style="{{vm.calcBgd('showMoreClicks', $index)}}") {{week.showMoreClicks}}
       td(style="{{vm.calcBgd('externalClicks', $index)}}") {{week.externalClicks}}
       td(style="{{vm.calcBgd('otherNavigationClicks', $index)}}") {{week.otherNavigationClicks}}
       td(style="{{vm.calcBgd('mediaWallClick', $index)}}") {{week.mediaWallClick}}
