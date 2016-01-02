@@ -27133,12 +27133,14 @@ angular.module('app').controller('weeksController', ['$http', function ($http) {
       previousValue = temp;
     }
 
+    return 'background: transparent';
+    /*
     if (currentValue > previousValue) {
       return 'background: rgba(71, 146, 71, 0.53);';
     }
     if (currentValue < previousValue) {
       return 'background: rgba(255, 0, 0, 0.37);';
-    }
+    }*/
   };
 
   $http
