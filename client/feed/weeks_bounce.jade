@@ -1,0 +1,22 @@
+div(ng-controller="weeksController as vm")
+  .margin-top.center
+    h2.margin-top 
+      a.underline.italic(href="/weeks") Weekly
+      | &nbsp;&nbsp;&nbsp;
+      a(href="/collections") By Collection
+      | &nbsp;&nbsp;&nbsp;
+      a(href="/countries") By Country
+
+  table.margin-top-big
+    tr
+      th(ng-click="vm.changeFilter('calendarWeek')", ng-class="{'active': vm.orderFilter=='calendarWeek', 'up': vm.orderFilterDirection}") Week
+      th(ng-click="vm.changeFilter('startDate')", ng-class="{'active': vm.orderFilter=='startDate', 'up': vm.orderFilterDirection}") Monday
+      th(ng-click="vm.changeFilter('bounceRate')", ng-class="{'active': vm.orderFilter=='bounceRate', 'up': vm.orderFilterDirection}") Bounce rate
+      th(ng-click="vm.changeFilter('avgTime')", ng-class="{'active': vm.orderFilter=='avgTime', 'up': vm.orderFilterDirection}") Avg. time
+      
+    tr(ng-repeat="week in (vm.weeks | orderBy: vm.orderFilter:vm.orderFilterDirection)")
+      td {{week.calendarWeek}}
+      td(style="min-width:82px;") {{week.startDate}}
+      td(style="{{vm.calcBgd('bounceRate', $index)}}") {{week.bounceRate}}%
+      td(style="{{vm.calcBgd('avgTime', $index)}}") {{week.avgTime | duration}}
+      
