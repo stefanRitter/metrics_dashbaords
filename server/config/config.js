@@ -5,13 +5,13 @@ var Path = require('path'),
 
 module.exports = {
   development: {
-    datastoreURI: 'mongodb://localhost/ihtmetrics',
+    datastoreURI: 'mongodb://localhost/aftmetrics',
     rootPath: rootPath,
     port: 8040
   },
 
   test: {
-    datastoreURI: 'mongodb://localhost/ihtmetrics-test',
+    datastoreURI: 'mongodb://localhost/aftmetrics-test',
     rootPath: rootPath,
     port: 8040
   },
