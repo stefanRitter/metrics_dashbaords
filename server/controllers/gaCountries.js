@@ -212,11 +212,11 @@ function getEventsData (request, reply) {
             case 'banner':
               country.bannerClicks = row[2];
               break;
-            case 'mediawallclick':
-              country.mediaWallClick = row[2];
+            case 'twitterfeedclick':
+              country.twitterfeedClick = row[2];
               break;
-            case 'mediawallscroll':
-              country.mediaWallScroll = row[2];
+            case 'twitterfeedscroll':
+              country.twitterfeedScroll = row[2];
               break;
           }
 
@@ -387,7 +387,7 @@ function getBannerClicks (request, reply) {
 }
 
 
-function getMediaWall (request, reply) {
+function gettwitterfeed (request, reply) {
   authClient.authorize(function (err) {
     if (err) {
       console.log('AUTH ERROR: ', err);
@@ -424,14 +424,14 @@ function getMediaWall (request, reply) {
 
       result.rows.forEach(function (row) {
         switch (row[1]) {
-          case 'mediawall':
-            countries[row[0]] = countries[row[0]] || { mediaWallClick: 0, mediaWallScroll: 0 };
+          case 'twitterfeed':
+            countries[row[0]] = countries[row[0]] || { twitterfeedClick: 0, twitterfeedScroll: 0 };
 
             if (row[2] === 'click') {
-              countries[row[0]].mediaWallClick = parseInt(row[3], 10);
+              countries[row[0]].twitterfeedClick = parseInt(row[3], 10);
             }
             if (row[2] === 'scroll') {
-              countries[row[0]].mediaWallScroll = parseInt(row[3], 10);
+              countries[row[0]].twitterfeedScroll = parseInt(row[3], 10);
             }
             break;
         }
@@ -446,8 +446,8 @@ function getMediaWall (request, reply) {
               return done(err);
             }
 
-            model.mediaWallClick  += (model.mediaWallClick || 0)  + countries[countryName].mediaWallClick;
-            model.mediaWallScroll += (model.mediaWallScroll || 0) + countries[countryName].mediaWallScroll;
+            model.twitterfeedClick  += (model.twitterfeedClick || 0)  + countries[countryName].twitterfeedClick;
+            model.twitterfeedScroll += (model.twitterfeedScroll || 0) + countries[countryName].twitterfeedScroll;
 
             model.save(function (err) {
               if (err) {
@@ -558,9 +558,9 @@ module.exports = function (_server) {
     },
     {
       method: 'GET',
-      path: '/ga/countries_mediawall',
+      path: '/ga/countries_twitterfeed',
       config: {
-        handler: getMediaWall,
+        handler: gettwitterfeed,
         auth: {
           mode: 'try',
           strategy: 'session'

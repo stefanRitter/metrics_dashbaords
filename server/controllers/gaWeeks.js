@@ -213,11 +213,11 @@ function getEventsData (request, reply, date) {
           case 'email':
             currentWeek.newEmails = row[1];
             break;
-          case 'mediawallclick':
-            currentWeek.mediaWallClick = row[1];
+          case 'twitterfeedclick':
+            currentWeek.twitterfeedClick = row[1];
             break;
-          case 'mediawallscroll':
-            currentWeek.mediaWallScroll = row[1];
+          case 'twitterfeedscroll':
+            currentWeek.twitterfeedScroll = row[1];
             break;
         }
       });

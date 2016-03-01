@@ -34,9 +34,9 @@ schema = mongoose.Schema({
   pageviewsPerSession: {type: Number, default: 0},
   sessions: {type: Number, default: 0},
 
-  mediaWallScroll: {type: Number, default: 0},
-  mediaWallClick: {type: Number, default: 0},
-  mediaWall: {type: Number, default: 0},
+  twitterfeedScroll: {type: Number, default: 0},
+  twitterfeedClick: {type: Number, default: 0},
+  twitterfeed: {type: Number, default: 0},
 
   bannerClicks: {type: Number, default: 0},
   bannerTopClicks: {type: Number, default: 0},

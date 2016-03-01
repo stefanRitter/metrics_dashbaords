@@ -9,7 +9,7 @@ function updateCollections (cb) {
       server['/ga/countries_events']({}, function () {
         server['/ga/countries_popular']({}, function () {
           server['/ga/countries_bannerclicks']({}, function () {
-            server['/ga/countries_mediawall']({}, function () {
+            server['/ga/countries_twitterfeed']({}, function () {
               if (cb) { cb(); }
               else { process.exit(); }
             });

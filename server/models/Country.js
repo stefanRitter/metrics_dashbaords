@@ -32,9 +32,9 @@ schema = mongoose.Schema({
   linkedinShares: {type: Number, default: 0},
   sharelineShares: {type: Number, default: 0},
 
-  mediaWallScroll: {type: Number, default: 0},
-  mediaWallClick: {type: Number, default: 0},
-  mediaWall: {type: Number, default: 0},
+  twitterfeedScroll: {type: Number, default: 0},
+  twitterfeedClick: {type: Number, default: 0},
+  twitterfeed: {type: Number, default: 0},
 
   collection1: {type: String, default: ''},
   collection2: {type: String, default: ''},
