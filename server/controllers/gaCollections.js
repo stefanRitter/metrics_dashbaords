@@ -231,6 +231,15 @@ function getEventsData (request, reply) {
             case 'pagination':
               collection.pagination = row[2];
               break;
+            case 'register':
+              collection.pagination = row[2];
+              break;
+            case 'emailus':
+              collection.pagination = row[2];
+              break;
+            case 'placeholder':
+              collection.pagination = row[2];
+              break;
           }
 
           Collection.findOneAndUpdate({url: row[0]}, collection, {upsert: true}, function (err) {

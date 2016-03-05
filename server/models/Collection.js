@@ -35,7 +35,11 @@ schema = mongoose.Schema({
   twitterShares: {type: Number, default: 0},
   facebookShares: {type: Number, default: 0},
   linkedinShares: {type: Number, default: 0},
-  sharelineShares: {type: Number, default: 0}
+  sharelineShares: {type: Number, default: 0},
+
+  register: {type: Number, default: 0},
+  placeholder: {type: Number, default: 0},
+  emailus: {type: Number, default: 0},
 });
 
 module.exports = mongoose.model('Collection', schema);

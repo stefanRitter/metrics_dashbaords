@@ -38,7 +38,11 @@ schema = mongoose.Schema({
 
   collection1: {type: String, default: ''},
   collection2: {type: String, default: ''},
-  collection3: {type: String, default: ''}
+  collection3: {type: String, default: ''},
+
+  register: {type: Number, default: 0},
+  placeholder: {type: Number, default: 0},
+  emailus: {type: Number, default: 0},
 });
 
 module.exports = mongoose.model('Country', schema);

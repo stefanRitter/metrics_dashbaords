@@ -218,6 +218,15 @@ function getEventsData (request, reply) {
             case 'twitterfeedscroll':
               country.twitterfeedScroll = row[2];
               break;
+            case 'register':
+              country.pagination = row[2];
+              break;
+            case 'emailus':
+              country.pagination = row[2];
+              break;
+            case 'placeholder':
+              country.pagination = row[2];
+              break;
           }
 
           Country.findOneAndUpdate({name: country.name}, country, {upsert: true}, function (err) {

@@ -219,6 +219,15 @@ function getEventsData (request, reply, date) {
           case 'twitterfeedscroll':
             currentWeek.twitterfeedScroll = row[1];
             break;
+          case 'register':
+            currentWeek.pagination = row[1];
+            break;
+          case 'emailus':
+            currentWeek.pagination = row[1];
+            break;
+          case 'placeholder':
+            currentWeek.pagination = row[1];
+            break;
         }
       });
 
