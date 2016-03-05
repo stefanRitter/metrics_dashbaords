@@ -13,7 +13,7 @@ var COLLECTIONS_VIEW_ID = 'ga:106745667';
 var ALL_DATA_VIEW_ID = 'ga:106585530';
 var LOGGEDIN_VIEW_ID = 'ga:106761745';
 
-var START_DATE = '2016-03-03';
+var START_DATE = '2016-03-08';
 var END_DATE = '2016-04-30';
 
 var authClient = new JWT(
