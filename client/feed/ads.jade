@@ -1,0 +1,36 @@
+div(ng-controller="adsController as vm")
+  .margin-top.center
+    h2.margin-top 
+      a(href="/weeks") Weekly
+      | &nbsp;&nbsp;&nbsp;
+      a(href="/collections") By Collection
+      | &nbsp;&nbsp;&nbsp;
+      a(href="/countries") By Country
+      | &nbsp;&nbsp;&nbsp;
+      a.underline.italic(href="/ads") Ads
+      
+  table.margin-top-big
+    tr
+      th Total views
+      th Total ad clicks
+      th Total conversion rate
+      th Homepage top banner clicks
+      th Homepage bottom banner clicks
+      th Collection top banner clicks
+      th Asset page banner clicks
+        
+    tr(ng-repeat="ad in (vm.ads | orderBy: vm.orderFilter:vm.orderFilterDirection)")
+      td {{ad.views}}
+      td {{ad.bannerClicksHomepage + ad.bottomBannerClicks + ad.assetPagesBannerClicks}}
+      td {{((ad.bannerClicksHomepage + ad.bottomBannerClicks + ad.assetPagesBannerClicks)/(ad.views/100)).toFixed(2)}} %
+      td {{ad.bannerClicksHomepage - ad.bannerClicksCollections}}
+      td {{ad.bottomBannerClicks}}
+      td {{ad.bannerClicksCollections}}
+      td {{ad.assetPagesBannerClicks}}
+    //  
+      td {{((ad.bannerTopClicks + ad.bannerBottomClicks)/(ad.views/100)).toFixed(2)}} %
+      td {{ad.bannerTopClicks}}
+      td {{((ad.bannerTopClicks)/(ad.views/100)).toFixed(2)}} %
+      td {{ad.bannerBottomClicks}}
+      td {{((ad.bannerBottomClicks)/(ad.views/100)).toFixed(2)}} %
+      

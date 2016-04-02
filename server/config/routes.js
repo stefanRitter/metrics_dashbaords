@@ -11,10 +11,12 @@ module.exports = function (config, server) {
   require('../controllers/collections.js')(server);
   require('../controllers/countries.js')(server);
   require('../controllers/weeks.js')(server);
+  require('../controllers/ads.js')(server);
 
   require('../controllers/gaCollections.js')(server);
   require('../controllers/gaCountries.js')(server);
   require('../controllers/gaWeeks.js')(server);
+  require('../controllers/gaAds.js')(server);
 
   server.route({
     method: 'GET',

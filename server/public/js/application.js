@@ -26934,6 +26934,7 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
     .when('/collections', {templateUrl: '/assets/html/feed/collections'})
     .when('/countries',   {templateUrl: '/assets/html/feed/countries'})
     .when('/weeks',       {templateUrl: '/assets/html/feed/weeks'})
+    .when('/ads',         {templateUrl: '/assets/html/feed/ads'})
     .when('/ga',          {templateUrl: '/assets/html/ga/index'})
 
     .otherwise({redirectTo: '/'});
@@ -27031,6 +27032,35 @@ angular.module('app').filter('duration', function() {
     return timeString;
   };
 });
+
+angular.module('app').controller('adsController', ['$http', function ($http) {
+  'use strict';
+
+  var vm = this;
+  vm.ads = [];
+  vm.orderFilter = 'calendarWeek';
+  vm.orderFilterDirection = false;
+
+  vm.changeFilter = function (filter) {
+    if (vm.orderFilter === filter) {
+      vm.orderFilterDirection = !vm.orderFilterDirection;
+    } else {
+      vm.orderFilter = filter;
+      vm.orderFilterDirection = true;
+    }
+  };
+
+  $http
+    .get('/ads', {})
+    .error(function (err) {
+      console.log('error', err);
+    })
+    .success(function (result) {
+      console.log(result);
+      vm.ads = result;
+    });
+
+}]);
 
 angular.module('app').controller('collectionsController', ['$http', function ($http) {
   'use strict';
